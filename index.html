@@ -59,14 +59,14 @@
         [dir="rtl"] .modal-row-label { border-right: 2px solid #8b7355; padding-right: 1rem; border-left: 0; padding-left: 0; }
         [dir="ltr"] .modal-row-label { border-left: 2px solid #8b7355; padding-left: 1rem; border-right: 0; padding-right: 0; }
         
-        /* Clean Logo Fix - No filters or opacity changes */
-        .site-logo { filter: none !important; opacity: 1 !important; transform: none !important; -webkit-filter: none !important; }
+        /* Clean Logo - No filters */
+        .site-logo { filter: none !important; opacity: 1 !important; transform: none !important; }
     </style>
 </head>
 <body class="antialiased">
 
     <!-- NAVIGATION -->
-    <nav class="fixed top-0 left-0 w-full h-24 z-50 flex items-center justify-between px-6 md:px-16 bg-art-bg/95 backdrop-blur-sm border-b border-art-ink/5">
+    <nav class="fixed top-0 left-0 w-full h-24 z-50 flex items-center justify-between px-6 md:px-16 bg-art-bg/90 backdrop-blur-sm border-b border-art-ink/5">
         <a href="#" @click.prevent="window.scrollTo(0, 0)" class="h-14">
             <img src="https://res.cloudinary.com/dz7wu111o/image/upload/FB_IMG_1773195017301_mwbetu.jpg" alt="Logo" class="h-full w-auto rounded-full site-logo shadow-sm border border-art-ink/10">
         </a>
@@ -76,14 +76,14 @@
                 <a href="#gallery" class="hover:text-art-accent transition-colors" x-text="t('nav-gallery')"></a>
                 <a href="#commission" class="hover:text-art-accent transition-colors" x-text="t('nav-commission')"></a>
                 <a href="#about" class="hover:text-art-accent transition-colors" x-text="t('nav-about')"></a>
-                <a href="#footer" class="hover:text-art-accent transition-colors" x-text="t('nav-contact')"></a>
+                <a href="#contact" class="hover:text-art-accent transition-colors" x-text="t('nav-contact')"></a>
             </div>
             
-            <button @click="toggleLang()" class="px-5 py-2 border border-art-ink/20 text-[10px] font-bold hover:bg-art-ink hover:text-white transition-all rounded-full min-w-[3.5rem]" x-text="lang === 'en' ? 'ع' : 'EN'"></button>
+            <button @click="toggleLang()" class="px-4 py-2 border border-art-ink/10 text-[10px] font-bold hover:bg-art-ink hover:text-white transition-all rounded-full min-w-[3rem]" x-text="lang === 'en' ? 'ع' : 'EN'"></button>
         </div>
 
         <div class="flex gap-4 md:hidden">
-            <button @click="toggleLang()" class="px-3 py-1 border border-art-ink/20 text-[10px] font-bold rounded-full" x-text="lang === 'en' ? 'ع' : 'EN'"></button>
+            <button @click="toggleLang()" class="px-3 py-1 border border-art-ink/10 text-[8px] font-bold rounded-full" x-text="lang === 'en' ? 'ع' : 'EN'"></button>
             <button @click="mobileMenu = !mobileMenu" class="p-2">
                 <i data-lucide="menu"></i>
             </button>
@@ -96,13 +96,14 @@
         <a href="#gallery" @click="mobileMenu = false" class="text-4xl serif-italic" x-text="t('nav-gallery')"></a>
         <a href="#commission" @click="mobileMenu = false" class="text-4xl serif-italic" x-text="t('nav-commission')"></a>
         <a href="#about" @click="mobileMenu = false" class="text-4xl serif-italic" x-text="t('nav-about')"></a>
+        <a href="#contact" @click="mobileMenu = false" class="text-4xl serif-italic" x-text="t('nav-contact')"></a>
     </div>
 
     <!-- MAIN SITE VIEW -->
-    <div>
+    <div x-show="view === 'site'">
         <!-- HERO SECTION -->
         <section class="relative h-screen w-full flex items-center justify-center text-white overflow-hidden">
-            <img src="https://res.cloudinary.com/dz7wu111o/image/upload/IMG20260404140158_exo1i0.jpg" alt="Background" class="absolute inset-0 w-full h-full object-cover">
+            <img src="https://res.cloudinary.com/dz7wu111o/image/upload/v1777326073/IMG_%D9%A2%D9%A0%D9%A2%D9%A6%D9%A0%D9%A4%D9%A0%D9%A7_%D9%A2%D9%A3%D9%A5%D9%A8%D9%A1%D9%A8_sbndri.jpg" alt="Background" class="absolute inset-0 w-full h-full object-cover object-bottom">
             <div class="absolute inset-0 hero-overlay"></div>
             
             <div class="relative z-10 text-center px-6 fade-in">
@@ -143,11 +144,10 @@
                                 </div>
                             </div>
                             <div class="mt-8 flex justify-between items-start">
-                                <div class="max-w-[70%]">
+                                <div class="max-w-full">
                                     <h3 class="text-2xl serif-italic font-medium leading-none mb-3" x-text="art.title"></h3>
                                     <p class="text-[10px] uppercase font-black text-art-ink/30 tracking-[0.2em]" x-text="`${art.medium} · ${art.year}`"></p>
                                 </div>
-                                <span class="text-sm font-bold text-art-accent" x-text="art.price"></span>
                             </div>
                         </div>
                     </template>
@@ -161,7 +161,7 @@
                 <!-- Image Side -->
                 <div class="lg:col-span-5 relative" :class="lang === 'ar' ? 'order-last lg:order-first' : ''">
                     <div class="aspect-[4/5] shadow-2xl relative z-10">
-                        <img src="https://res.cloudinary.com/dz7wu111o/image/upload/IMG_235818_2026-04-07_sbndri.jpg" alt="Osman Rafaat" class="w-full h-full object-cover grayscale-[0.1]">
+                        <img src="https://res.cloudinary.com/dz7wu111o/image/upload/IMG_235818_2026-04-07_sbndri.jpg" alt="Osman Rafaat" class="w-full h-full object-cover">
                     </div>
                     <div class="absolute -top-6 -right-6 -bottom-6 -left-6 border border-art-accent/30 z-0"></div>
                 </div>
@@ -200,10 +200,14 @@
                             <label class="block text-[10px] uppercase font-black tracking-widest mb-2 opacity-40" x-text="t('form-email')"></label>
                             <input type="email" x-model="commForm.email" required class="w-full border-b border-art-ink/10 py-3 outline-none focus:border-art-accent bg-transparent">
                         </div>
+                        <div>
+                            <label class="block text-[10px] uppercase font-black tracking-widest mb-2 opacity-40" x-text="t('form-subject')"></label>
+                            <input type="text" x-model="commForm.subject" required class="w-full border-b border-art-ink/10 py-3 outline-none focus:border-art-accent bg-transparent">
+                        </div>
                     </div>
                     <div>
                         <label class="block text-[10px] uppercase font-black tracking-widest mb-2 opacity-40" x-text="t('form-vision')"></label>
-                        <textarea x-model="commForm.vision" required class="w-full border border-art-ink/10 p-4 h-32 outline-none focus:border-art-accent bg-transparent resize-none"></textarea>
+                        <textarea x-model="commForm.vision" required class="w-full border border-art-ink/10 p-4 h-full outline-none focus:border-art-accent bg-transparent resize-none md:min-h-[200px]"></textarea>
                     </div>
                     <div class="md:col-span-2">
                         <button type="submit" class="w-full py-5 bg-art-ink text-white text-[10px] uppercase font-black tracking-[0.3em] hover:bg-art-accent transition-all" x-text="t('form-submit')"></button>
@@ -213,7 +217,7 @@
         </section>
 
         <!-- FOOTER -->
-        <footer id="footer" class="py-32 px-6 border-t border-art-ink/5 text-center">
+        <footer id="contact" class="py-32 px-6 border-t border-art-ink/5 text-center">
             <div class="max-w-2xl mx-auto flex flex-col items-center">
                 <img src="https://res.cloudinary.com/dz7wu111o/image/upload/FB_IMG_1773195017301_mwbetu.jpg" alt="Logo" class="h-24 w-24 rounded-full mb-12 site-logo">
                 <p class="text-[10px] uppercase font-black tracking-[0.4em] mb-12 opacity-30 italic" x-text="t('footer-copy')"></p>
@@ -244,8 +248,7 @@
 
             <div class="lg:w-2/5 p-12 md:p-20 flex flex-col" :class="lang === 'ar' ? 'text-right' : ''">
                 <div class="flex-1">
-                    <h3 class="text-4xl md:text-6xl serif-italic mb-4" x-text="selectedArt?.title"></h3>
-                    <p class="text-2xl text-art-accent font-bold mb-10" x-text="selectedArt?.price"></p>
+                    <h3 class="text-4xl md:text-6xl serif-italic mb-10" x-text="selectedArt?.title"></h3>
                     
                     <div x-show="selectedArt?.description" class="p-6 bg-art-ink/5 italic serif-italic text-lg mb-12 border-l-4 border-art-accent">
                         <p x-text="selectedArt?.description"></p>
@@ -266,7 +269,7 @@
                         </div>
                     </div>
 
-                    <!-- Visitor Inquiry -->
+                    <!-- Inquiry Form -->
                     <div class="mt-12 space-y-4">
                         <label class="block text-[10px] uppercase font-black tracking-widest opacity-40 mb-2" x-text="t('label-message')"></label>
                         <textarea x-model="visitorMessage" :placeholder="t('message-placeholder')" class="w-full p-4 bg-white border border-art-ink/10 text-sm outline-none focus:border-art-accent min-h-[100px] resize-none"></textarea>
@@ -274,13 +277,13 @@
                 </div>
 
                 <div class="mt-12">
-                    <button @click="sendArtInquiry()" class="block w-full bg-art-ink text-white py-5 text-[10px] uppercase font-black tracking-[0.3em] text-center hover:bg-art-accent transition-all" x-text="t('form-submit')"></button>
+                    <button @click="sendArtInquiry()" class="block w-full bg-art-ink text-white py-5 text-[10px] uppercase font-black tracking-[0.3em] text-center hover:bg-art-accent transition-all" x-text="t('form-submit-wa')"></button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- SCRIPTS -->
+    <!-- SCRIPT -->
     <script>
         const TRANSLATIONS = {
             en: {
@@ -288,10 +291,10 @@
                 'nav-commission': 'Commission',
                 'nav-about': 'About',
                 'nav-contact': 'Contact',
-                'hero-tagline': 'Where the Nile meets the canvas',
+                'hero-tagline': "Earth's Truth, Color's Freedom",
                 'artist-name': 'Osman Rafaat',
                 'artist-subtitle': 'Visual Artist · Minya, Egypt',
-                'hero-quote': 'Where the Nile meets the canvas',
+                'hero-quote': "Earth's Truth, Color's Freedom",
                 'section-gallery': 'Selected Works',
                 'loading': 'Loading atmosphere...',
                 'coming-soon': 'New works coming soon.',
@@ -303,163 +306,4 @@
                 'about-p3': 'My style is not yet complete — and that is precisely what makes every painting different from the one before it.',
                 'about-quote': 'Everything I paint begins here.',
                 'section-commission': 'Commission a Piece',
-                'commission-desc': 'Whether a landscape, a heritage-inspired piece, or a specific size to fit your space—I welcome custom inquiries that resonate with the spirit of the Nile.',
-                'form-name': 'Full Name',
-                'form-email': 'Email Address',
-                'form-vision': 'Your Vision / Details',
-                'form-submit': 'Send via WhatsApp',
-                'footer-copy': '© 2026 Osman Rafaat · All Rights Reserved',
-                'label-dims': 'Dimensions',
-                'label-medium': 'Medium',
-                'label-year': 'Year',
-                'label-message': 'Your Message / Question',
-                'message-placeholder': 'Is this piece still available? I would like to know more about its history...'
-            },
-            ar: {
-                'nav-gallery': 'المعرض',
-                'nav-commission': 'طلب خاص',
-                'nav-about': 'عن الفنان',
-                'nav-contact': 'تواصل',
-                'hero-tagline': 'حيث يلتقي النيل باللوحة',
-                'artist-name': 'عثمان رأفت',
-                'artist-subtitle': 'فنان تشكيلي · المنيا، مصر',
-                'hero-quote': 'حيث يلتقي النيل باللوحة',
-                'section-gallery': 'أعمال مختارة',
-                'loading': 'جاري تحميل الأعمال...',
-                'coming-soon': 'أعمال جديدة قريباً.',
-                'view-piece': 'عرض اللوحة',
-                'artist-statement': 'رؤية فنية',
-                'about-title': 'النيل يجري أمام نافذتي.',
-                'about-p1': 'نشأت في قرية في المنيا، صعيد مصر — حيث النهر ليس استعارة، بل جار. حيث الجدران القديمة تتحدث بثلاث لغات في آن واحد: فرعونية، إسلامية، قبطية.',
-                'about-p2': 'درست في كلية التربية النوعية، قسم التربية الفنية، جامعة أسيوط، لكنني دائمًا ما أرسم بالفطرة قبل النظرية. تنجذب روحي للتراث — ليس كحنين، ولكن كشيء حي. شيء لا يزال ينبض بين جدران الطوب اللبن، وفي هندسة المآذن، وفي وجه فلاح وقت الغسق.',
-                'about-p3': 'أسلوبي لم يكتمل بعد — وهذا بالضبط ما يجعل كل لوحة مختلفة عن سابقتها.',
-                'about-quote': 'كل ما أرسمه يبدأ من هنا.',
-                'section-commission': 'اطلب عملك الخاص',
-                'commission-desc': 'سواء كان منظراً طبيعياً، أو عملاً مستوحى من التراث، أو مقاساً معيناً يناسب مساحتك - أرحب بالطلبات الخاصة التي تحمل نبض النيل.',
-                'form-name': 'الاسم الكامل',
-                'form-email': 'البريد الإلكتروني',
-                'form-vision': 'تخيلك للعمل / التفاصيل',
-                'form-submit': 'إرسال عبر واتساب',
-                'footer-copy': '© 2026 عثمان رأفت · جميع الحقوق محفوظة',
-                'label-dims': 'الأبعاد',
-                'label-medium': 'الخامة',
-                'label-year': 'السنة',
-                'label-message': 'رسالتك / استفسارك',
-                'message-placeholder': 'هل هذه اللوحة متاحة؟ أود معرفة المزيد من التفاصيل عنها...'
-            }
-        };
-
-        function osmanArt() {
-            return {
-                lang: localStorage.getItem('osman_lang') || 'en',
-                loading: true,
-                mobileMenu: false,
-                showModal: false,
-                selectedArt: null,
-                visitorMessage: '',
-                artworks: [],
-                commForm: { name: '', email: '', vision: '' },
-
-                init() {
-                    this.sync();
-                    setTimeout(() => lucide.createIcons(), 500);
-                },
-
-                t(key) {
-                    return TRANSLATIONS[this.lang][key] || key;
-                },
-
-                toggleLang() {
-                    this.lang = this.lang === 'en' ? 'ar' : 'en';
-                    localStorage.setItem('osman_lang', this.lang);
-                },
-
-                async sync() {
-                    this.loading = true;
-                    try {
-                        const res = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQeGGt3B9cfx5H5dmh7-QjYUDmzRXML49qSvN1pfD-XfACTPKOX4TXVQA6FqkNumM-fSZ5TxmxdeWuH/pub?output=csv');
-                        const text = await res.text();
-                        this.artworks = this.parseCSV(text);
-                    } catch (e) {
-                        console.error('Sync failed', e);
-                    }
-                    this.loading = false;
-                },
-
-                parseCSV(text) {
-                    const lines = text.trim().split('\n');
-                    const LOGO_URL = 'https://res.cloudinary.com/dz7wu111o/image/upload/FB_IMG_1773195017301_mwbetu.jpg';
-                    
-                    return lines.slice(1).map(line => {
-                        const result = [];
-                        let cell = '';
-                        let inQuotes = false;
-                        for (let i = 0; i < line.length; i++) {
-                            const char = line[i];
-                            if (char === '"' && line[i+1] === '"') { cell += '"'; i++; }
-                            else if (char === '"') inQuotes = !inQuotes;
-                            else if (char === ',' && !inQuotes) { result.push(cell.trim()); cell = ''; }
-                            else cell += char;
-                        }
-                        result.push(cell.trim());
-
-                        if (result.length < 7) return null;
-                        const art = {
-                            id: result[0], title: result[1], year: result[2], medium: result[3],
-                            price: result[4], dimensions: result[5], image: result[6],
-                            description: result[7] || ''
-                        };
-                        // Filter out logo if it mistakenly appears as artwork in CSV
-                        if (art.image === LOGO_URL) return null;
-                        return art;
-                    }).filter(Boolean);
-                },
-
-                openArt(art) {
-                    this.selectedArt = art;
-                    this.visitorMessage = '';
-                    this.showModal = true;
-                    // Reset scroll for body
-                    document.body.style.overflow = 'hidden';
-                    setTimeout(() => lucide.createIcons(), 50);
-                },
-
-                async closeArt() {
-                    this.showModal = false;
-                    document.body.style.overflow = 'auto';
-                },
-
-                sendArtInquiry() {
-                    const text = `Hello Osman, I am interested in your artwork:
-Title: ${this.selectedArt.title}
-Price: ${this.selectedArt.price}
-Dimensions: ${this.selectedArt.dimensions}
-Medium: ${this.selectedArt.medium}
-
-Message from visitor: 
-${this.visitorMessage || 'None provided'}
-
-View work: ${this.selectedArt.image}`;
-
-                    const url = `https://wa.me/201026933840?text=${encodeURIComponent(text)}`;
-                    window.open(url, '_blank');
-                },
-
-                sendCommission() {
-                    const text = `Hello Osman, I would like to commission a custom artwork:
-Name: ${this.commForm.name}
-Email: ${this.commForm.email}
-
-Vision/Description:
-${this.commForm.vision}`;
-
-                    const url = `https://wa.me/201026933840?text=${encodeURIComponent(text)}`;
-                    window.open(url, '_blank');
-                    // Reset form
-                    this.commForm = { name: '', email: '', vision: '' };
-                }
-            }
-        }
-    </script>
-</body>
-</html>
+                'commission-desc': 'Whether a landscape, a heritage-inspired piece, or a specific size to fit
