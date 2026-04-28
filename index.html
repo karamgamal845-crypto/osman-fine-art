@@ -263,36 +263,8 @@
     </footer>
 
     <script>
-        // Default artworks to ensure the site works immediately
-        const artworks = [
-            {
-                title: "Nile at Dawn",
-                image: "https://res.cloudinary.com/dz7wu111o/image/upload/IMG20260404140158_exo1i0.jpg",
-                price: "EGP 18,000",
-                medium: "Oil on canvas",
-                year: "2025",
-                dimensions: "90 × 120 cm",
-                status: "available"
-            },
-            {
-                title: "Evening in Minya",
-                image: "https://res.cloudinary.com/dz7wu111o/image/upload/IMG_235818_2026-04-07_sbndri.jpg",
-                price: "EGP 22,000",
-                medium: "Oil on canvas",
-                year: "2026",
-                dimensions: "100 × 80 cm",
-                status: "available"
-            },
-            {
-                title: "Old Doors",
-                image: "https://res.cloudinary.com/dz7wu111o/image/upload/FB_IMG_1773195017301_mwbetu.jpg",
-                price: "Sold",
-                medium: "Mixed media",
-                year: "2024",
-                dimensions: "70 × 70 cm",
-                status: "sold"
-            }
-        ];
+        // Artworks will be added by the artist
+        const artworks = [];
 
         let currentArtwork = null;
 
@@ -300,6 +272,10 @@
             const grid = document.getElementById('galleryGrid');
             if (!grid) return;
             grid.innerHTML = '';
+            if (artworks.length === 0) {
+                grid.innerHTML = '<p style="text-align:center;color:#6b6b6b;font-size:1.1rem;grid-column:1/-1;padding:3rem;">New works coming soon — stay tuned.</p>';
+                return;
+            }
             artworks.forEach((artwork, index) => {
                 const card = document.createElement('div');
                 card.className = 'artwork-card';
@@ -343,17 +319,4 @@
         // Close modal on background click
         document.getElementById('artworkModal').addEventListener('click', function(e) {
             if (e.target === this) closeModal();
-        });
-
-        // Form submission
-        document.getElementById('commissionForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Thank you! Your inquiry has been sent successfully.');
-            this.reset();
-        });
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', renderGallery);
-    </script>
-</body>
-</html>
+       
