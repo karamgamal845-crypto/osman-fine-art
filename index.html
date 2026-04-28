@@ -144,7 +144,7 @@
                                 </div>
                             </div>
                             <div class="mt-8 flex justify-between items-start">
-                                <div class="max-w-full">
+                                <div class="max-w-[70%]">
                                     <h3 class="text-2xl serif-italic font-medium leading-none mb-3" x-text="art.title"></h3>
                                     <p class="text-[10px] uppercase font-black text-art-ink/30 tracking-[0.2em]" x-text="`${art.medium} · ${art.year}`"></p>
                                 </div>
@@ -248,7 +248,7 @@
 
             <div class="lg:w-2/5 p-12 md:p-20 flex flex-col" :class="lang === 'ar' ? 'text-right' : ''">
                 <div class="flex-1">
-                    <h3 class="text-4xl md:text-6xl serif-italic mb-10" x-text="selectedArt?.title"></h3>
+                    <h3 class="text-4xl md:text-6xl serif-italic mb-4" x-text="selectedArt?.title"></h3>
                     
                     <div x-show="selectedArt?.description" class="p-6 bg-art-ink/5 italic serif-italic text-lg mb-12 border-l-4 border-art-accent">
                         <p x-text="selectedArt?.description"></p>
@@ -277,7 +277,7 @@
                 </div>
 
                 <div class="mt-12">
-                    <button @click="sendArtInquiry()" class="block w-full bg-art-ink text-white py-5 text-[10px] uppercase font-black tracking-[0.3em] text-center hover:bg-art-accent transition-all" x-text="t('form-submit-wa')"></button>
+                    <button @click="sendArtInquiry()" class="block w-full bg-art-ink text-white py-5 text-[10px] uppercase font-black tracking-[0.3em] text-center hover:bg-art-accent transition-all" x-text="t('form-submit')"></button>
                 </div>
             </div>
         </div>
@@ -306,4 +306,4 @@
                 'about-p3': 'My style is not yet complete — and that is precisely what makes every painting different from the one before it.',
                 'about-quote': 'Everything I paint begins here.',
                 'section-commission': 'Commission a Piece',
-                'commission-desc': 'Whether a landscape, a heritage-inspired piece, or a specific size to fit
+                'commission-desc': 'Whether a landscape, a heritage-inspired piece, or a specific size to fit yo
