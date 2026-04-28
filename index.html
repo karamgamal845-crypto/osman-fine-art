@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html :lang="lang" :dir="lang === 'ar' ? 'rtl' : 'ltr'" x-data="osmanArt()" x-init="init()">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -42,14 +42,11 @@
 
         .serif-italic { font-family: 'Cormorant Garamond', serif; font-style: italic; }
         
-        /* Animation */
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .fade-in { animation: fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
-        /* Modal Backdrop */
         .modal-backdrop { backdrop-filter: blur(12px); background-color: rgba(28, 26, 23, 0.85); }
 
-        /* Scrollbar */
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: #f5f2eb; }
         ::-webkit-scrollbar-thumb { background: #8b7355; }
@@ -58,48 +55,61 @@
         
         .artwork-image-container img { transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
         .artwork-image-container:hover img { transform: scale(1.05); }
+
+        [dir="rtl"] .modal-row-label { border-right: 2px solid #8b7355; padding-right: 1rem; border-left: 0; padding-left: 0; }
+        [dir="ltr"] .modal-row-label { border-left: 2px solid #8b7355; padding-left: 1rem; border-right: 0; padding-right: 0; }
+        
+        /* Clean Logo Fix - No filters or opacity changes */
+        .site-logo { filter: none !important; opacity: 1 !important; transform: none !important; -webkit-filter: none !important; }
     </style>
 </head>
-<body x-data="osmanArt()" x-init="init()" class="antialiased selection:bg-art-accent selection:text-white">
+<body class="antialiased">
 
     <!-- NAVIGATION -->
-    <nav class="fixed top-0 left-0 w-full h-24 z-50 flex items-center justify-between px-6 md:px-16 bg-art-bg/90 backdrop-blur-sm border-b border-art-ink/5">
+    <nav class="fixed top-0 left-0 w-full h-24 z-50 flex items-center justify-between px-6 md:px-16 bg-art-bg/95 backdrop-blur-sm border-b border-art-ink/5">
         <a href="#" @click.prevent="window.scrollTo(0, 0)" class="h-14">
-            <img src="https://res.cloudinary.com/dz7wu111o/image/upload/FB_IMG_1773195017301_mwbetu.jpg" alt="Osman Rafaat Logo" class="h-full w-auto rounded-full grayscale hover:grayscale-0 transition-all duration-700 shadow-sm border border-art-ink/10">
+            <img src="https://res.cloudinary.com/dz7wu111o/image/upload/FB_IMG_1773195017301_mwbetu.jpg" alt="Logo" class="h-full w-auto rounded-full site-logo shadow-sm border border-art-ink/10">
         </a>
         
-        <div class="hidden md:flex gap-12 text-[10px] uppercase font-bold tracking-[0.3em] text-art-ink/60">
-            <a href="#gallery" class="hover:text-art-accent transition-colors">Gallery</a>
-            <a href="#commission" class="hover:text-art-accent transition-colors">Commission</a>
-            <a href="#about" class="hover:text-art-accent transition-colors">About</a>
-            <a href="https://wa.me/201026933840" target="_blank" class="hover:text-art-accent transition-colors">Contact</a>
+        <div class="hidden md:flex gap-12 items-center">
+            <div class="flex gap-12 text-[10px] uppercase font-bold tracking-[0.3em] text-art-ink/60">
+                <a href="#gallery" class="hover:text-art-accent transition-colors" x-text="t('nav-gallery')"></a>
+                <a href="#commission" class="hover:text-art-accent transition-colors" x-text="t('nav-commission')"></a>
+                <a href="#about" class="hover:text-art-accent transition-colors" x-text="t('nav-about')"></a>
+                <a href="#footer" class="hover:text-art-accent transition-colors" x-text="t('nav-contact')"></a>
+            </div>
+            
+            <button @click="toggleLang()" class="px-5 py-2 border border-art-ink/20 text-[10px] font-bold hover:bg-art-ink hover:text-white transition-all rounded-full min-w-[3.5rem]" x-text="lang === 'en' ? 'ع' : 'EN'"></button>
         </div>
 
-        <button @click="mobileMenu = !mobileMenu" class="md:hidden p-2">
-            <i data-lucide="menu"></i>
-        </button>
+        <div class="flex gap-4 md:hidden">
+            <button @click="toggleLang()" class="px-3 py-1 border border-art-ink/20 text-[10px] font-bold rounded-full" x-text="lang === 'en' ? 'ع' : 'EN'"></button>
+            <button @click="mobileMenu = !mobileMenu" class="p-2">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
     </nav>
 
     <!-- MOBILE MENU -->
     <div x-show="mobileMenu" x-cloak x-transition.opacity class="fixed inset-0 z-[60] bg-art-bg flex flex-col items-center justify-center gap-12">
         <button @click="mobileMenu = false" class="absolute top-8 left-8 p-4"><i data-lucide="x"></i></button>
-        <a href="#gallery" @click="mobileMenu = false" class="text-4xl serif-italic">Gallery</a>
-        <a href="#commission" @click="mobileMenu = false" class="text-4xl serif-italic">Commission</a>
-        <a href="#about" @click="mobileMenu = false" class="text-4xl serif-italic">About</a>
-        <a href="https://wa.me/201026933840" target="_blank" @click="mobileMenu = false" class="text-4xl serif-italic">Contact</a>
+        <a href="#gallery" @click="mobileMenu = false" class="text-4xl serif-italic" x-text="t('nav-gallery')"></a>
+        <a href="#commission" @click="mobileMenu = false" class="text-4xl serif-italic" x-text="t('nav-commission')"></a>
+        <a href="#about" @click="mobileMenu = false" class="text-4xl serif-italic" x-text="t('nav-about')"></a>
     </div>
 
     <!-- MAIN SITE VIEW -->
-    <div x-show="view === 'site'">
+    <div>
         <!-- HERO SECTION -->
         <section class="relative h-screen w-full flex items-center justify-center text-white overflow-hidden">
-            <img src="https://res.cloudinary.com/dz7wu111o/image/upload/IMG20260404140158_exo1i0.jpg" alt="Nile Landscape" class="absolute inset-0 w-full h-full object-cover">
+            <img src="https://res.cloudinary.com/dz7wu111o/image/upload/IMG20260404140158_exo1i0.jpg" alt="Background" class="absolute inset-0 w-full h-full object-cover">
             <div class="absolute inset-0 hero-overlay"></div>
             
             <div class="relative z-10 text-center px-6 fade-in">
-                <p class="text-[10px] uppercase tracking-[0.5em] font-bold mb-8 opacity-80 lg:mb-12">Where the Nile meets the canvas</p>
-                <h1 class="text-7xl md:text-[140px] serif-italic font-medium leading-none mb-4 md:mb-8">Osman Rafaat</h1>
-                <p class="text-lg md:text-2xl font-light opacity-90 mb-2">Visual Artist · Minya, Egypt</p>
+                <p class="text-[10px] uppercase tracking-[0.5em] font-bold mb-8 opacity-80 lg:mb-12" x-text="t('hero-tagline')"></p>
+                <h1 class="text-7xl md:text-[140px] serif-italic font-medium leading-none mb-4 md:mb-8" x-text="t('artist-name')"></h1>
+                <p class="text-lg md:text-2xl font-light opacity-90 mb-2" x-text="t('artist-subtitle')"></p>
+                <span class="text-xs italic opacity-60" x-text="`&quot;${t('hero-quote')}&quot;`"></span>
             </div>
 
             <a href="#gallery" class="absolute bottom-12 left-1/2 -translate-x-1/2 animate-bounce opacity-40 hover:opacity-100 transition-opacity">
@@ -112,20 +122,16 @@
             <div class="max-w-7xl mx-auto">
                 <div class="flex flex-col md:flex-row justify-between items-baseline mb-24">
                     <div class="fade-in">
-                        <h2 class="text-5xl md:text-8xl serif-italic mb-6">Gallery</h2>
+                        <h2 class="text-5xl md:text-8xl serif-italic mb-6" x-text="t('section-gallery')"></h2>
                         <div class="h-1.5 w-32 bg-art-accent"></div>
                     </div>
                 </div>
 
                 <!-- Loader -->
-                <div x-show="loading" class="text-center py-24 opacity-30 italic serif-italic text-xl">
-                    Loading works...
-                </div>
+                <div x-show="loading" class="text-center py-24 opacity-30 italic serif-italic text-xl" x-text="t('loading')"></div>
 
                 <!-- Empty State -->
-                <div x-show="!loading && artworks.length === 0" class="text-center py-24 opacity-30 italic serif-italic text-xl">
-                    New works coming soon.
-                </div>
+                <div x-show="!loading && artworks.length === 0" class="text-center py-24 opacity-30 italic serif-italic text-xl" x-text="t('coming-soon')"></div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-32" x-show="!loading">
                     <template x-for="(art, idx) in artworks" :key="idx">
@@ -133,10 +139,10 @@
                             <div class="aspect-[4/5] bg-neutral-200 overflow-hidden relative shadow-2xl artwork-image-container">
                                 <img :src="art.image" :alt="art.title" class="w-full h-full object-cover">
                                 <div class="absolute inset-0 bg-art-ink/10 opacity-0 group-hover:opacity-100 transition-all duration-700 flex items-center justify-center">
-                                    <span class="px-8 py-3 bg-white/10 backdrop-blur-md text-white text-[10px] uppercase font-bold tracking-[0.3em] border border-white/20">View Piece</span>
+                                    <span class="px-8 py-3 bg-white/10 backdrop-blur-md text-white text-[10px] uppercase font-bold tracking-[0.3em] border border-white/20" x-text="t('view-piece')"></span>
                                 </div>
                             </div>
-                            <div class="mt-8 flex justify-between items-start text-right" dir="rtl">
+                            <div class="mt-8 flex justify-between items-start">
                                 <div class="max-w-[70%]">
                                     <h3 class="text-2xl serif-italic font-medium leading-none mb-3" x-text="art.title"></h3>
                                     <p class="text-[10px] uppercase font-black text-art-ink/30 tracking-[0.2em]" x-text="`${art.medium} · ${art.year}`"></p>
@@ -151,28 +157,26 @@
 
         <!-- ABOUT SECTION -->
         <section id="about" class="bg-art-ink text-[#f5f2eb] py-40 px-6 md:px-16 lg:px-32">
-            <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-20 items-center text-right" dir="rtl">
-                <div class="lg:col-span-5 relative order-last lg:order-first">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-20 items-center">
+                <!-- Image Side -->
+                <div class="lg:col-span-5 relative" :class="lang === 'ar' ? 'order-last lg:order-first' : ''">
                     <div class="aspect-[4/5] shadow-2xl relative z-10">
-                        <img src="https://res.cloudinary.com/dz7wu111o/image/upload/IMG_235818_2026-04-07_sbndri.jpg" alt="Osman Rafaat" class="w-full h-full object-cover grayscale-[0.2]">
+                        <img src="https://res.cloudinary.com/dz7wu111o/image/upload/IMG_235818_2026-04-07_sbndri.jpg" alt="Osman Rafaat" class="w-full h-full object-cover grayscale-[0.1]">
                     </div>
                     <div class="absolute -top-6 -right-6 -bottom-6 -left-6 border border-art-accent/30 z-0"></div>
                 </div>
                 
-                <div class="lg:col-span-7 flex flex-col justify-center">
-                    <span class="text-art-accent text-[10px] uppercase font-black tracking-[0.4em] mb-12 block">Artist Statement</span>
-                    <h2 class="text-5xl md:text-8xl serif-italic mb-12 leading-tight">النيل يجري أمام نافذتي.</h2>
+                <!-- Content Side -->
+                <div class="lg:col-span-7 flex flex-col justify-center" :class="lang === 'ar' ? 'text-right' : ''">
+                    <span class="text-art-accent text-[10px] uppercase font-black tracking-[0.4em] mb-12 block" x-text="t('artist-statement')"></span>
+                    <h2 class="text-5xl md:text-8xl serif-italic mb-12 leading-tight" x-text="t('about-title')"></h2>
                     
                     <div class="space-y-8 font-light text-lg md:text-xl leading-relaxed text-white/70">
-                        <p>نشأت في قرية في المنيا، صعيد مصر — حيث النهر ليس استعارة، بل جار. حيث الجدران القديمة تتحدث بثلاث لغات في آن واحد: فرعونية، إسلامية، قبطية.</p>
-                        <p>درست في كلية التربية النوعية، قسم التربية الفنية، جامعة أسيوط، لكنني دائمًا ما أرسم بالفطرة قبل النظرية. تنجذب روحي للتراث — ليس كحنين، ولكن كشيء حي. شيء لا يزال ينبض بين جدران الطوب اللبن، وفي هندسة المآذن، وفي وجه فلاح وقت الغسق.</p>
-                        <p>أسلوبي لم يكتمل بعد — وهذا بالضبط ما يجعل كل لوحة مختلفة عن سابقتها.</p>
-                        <p class="serif-italic italic text-3xl text-white pt-8 border-r-2 border-art-accent pr-8">كل ما أرسمه يبدأ من هنا.</p>
+                        <p x-text="t('about-p1')"></p>
+                        <p x-text="t('about-p2')"></p>
+                        <p x-text="t('about-p3')"></p>
                         
-                        <div class="pt-12 border-t border-white/10 mt-12 text-left space-y-6 opacity-60" dir="ltr">
-                            <p>I grew up in a village in Minya, Upper Egypt — where the river is not a metaphor, it is a neighbor. Where ancient walls speak in three languages at once: Pharaonic, Islamic, Coptic.</p>
-                            <p>I studied at the Faculty of Specific Education, Fine Arts Department, Assiut University, but I have always painted from instinct before theory. I am drawn to heritage — not as nostalgia, but as a living thing.</p>
-                        </div>
+                        <p class="serif-italic italic text-3xl text-white pt-8" :class="lang === 'ar' ? 'border-r-2 border-art-accent pr-8' : 'border-l-2 border-art-accent pl-8'" x-text="t('about-quote')"></p>
                     </div>
                 </div>
             </div>
@@ -180,92 +184,50 @@
 
         <!-- COMMISSION SECTION -->
         <section id="commission" class="py-32 px-6 md:px-16 lg:px-32 border-t border-art-ink/5">
-            <div class="max-w-3xl mx-auto text-center">
-                <h2 class="text-4xl md:text-6xl serif-italic mb-8">Commission a Piece</h2>
-                <p class="text-lg font-light opacity-70 mb-12">Whether a landscape, a heritage-inspired piece, or a specific size to fit your space—I welcome custom inquiries that resonate with the spirit of the Nile.</p>
-                <a href="https://wa.me/201026933840?text=Hello, I am interested in commissioning a custom artwork." target="_blank" class="inline-block px-12 py-5 bg-art-ink text-white text-[10px] uppercase font-black tracking-[0.3em] hover:bg-art-accent transition-all">Start an Inquiry</a>
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-6xl serif-italic mb-8" x-text="t('section-commission')"></h2>
+                    <p class="text-lg font-light opacity-70" x-text="t('commission-desc')"></p>
+                </div>
+
+                <form @submit.prevent="sendCommission()" class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white p-8 md:p-12 shadow-xl border border-art-ink/5">
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-[10px] uppercase font-black tracking-widest mb-2 opacity-40" x-text="t('form-name')"></label>
+                            <input type="text" x-model="commForm.name" required class="w-full border-b border-art-ink/10 py-3 outline-none focus:border-art-accent bg-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase font-black tracking-widest mb-2 opacity-40" x-text="t('form-email')"></label>
+                            <input type="email" x-model="commForm.email" required class="w-full border-b border-art-ink/10 py-3 outline-none focus:border-art-accent bg-transparent">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] uppercase font-black tracking-widest mb-2 opacity-40" x-text="t('form-vision')"></label>
+                        <textarea x-model="commForm.vision" required class="w-full border border-art-ink/10 p-4 h-32 outline-none focus:border-art-accent bg-transparent resize-none"></textarea>
+                    </div>
+                    <div class="md:col-span-2">
+                        <button type="submit" class="w-full py-5 bg-art-ink text-white text-[10px] uppercase font-black tracking-[0.3em] hover:bg-art-accent transition-all" x-text="t('form-submit')"></button>
+                    </div>
+                </form>
             </div>
         </section>
 
         <!-- FOOTER -->
-        <footer id="contact" class="py-32 px-6 border-t border-art-ink/5 text-center">
+        <footer id="footer" class="py-32 px-6 border-t border-art-ink/5 text-center">
             <div class="max-w-2xl mx-auto flex flex-col items-center">
-                <img src="https://res.cloudinary.com/dz7wu111o/image/upload/FB_IMG_1773195017301_mwbetu.jpg" alt="Logo" class="h-24 w-24 rounded-full mb-12 grayscale opacity-60">
-                <p class="text-[10px] uppercase font-black tracking-[0.4em] mb-12 opacity-30 italic">© 2026 Osman Rafaat · All Rights Reserved</p>
+                <img src="https://res.cloudinary.com/dz7wu111o/image/upload/FB_IMG_1773195017301_mwbetu.jpg" alt="Logo" class="h-24 w-24 rounded-full mb-12 site-logo">
+                <p class="text-[10px] uppercase font-black tracking-[0.4em] mb-12 opacity-30 italic" x-text="t('footer-copy')"></p>
                 
                 <div class="flex flex-col md:flex-row gap-6 w-full">
-                    <a href="tel:01122633026" class="flex-1 px-8 py-5 border border-art-ink/10 text-[10px] uppercase font-bold tracking-widest hover:bg-art-ink hover:text-white transition-all">
+                    <a href="tel:01122633026" class="flex-1 px-8 py-5 border border-art-ink/10 text-[10px] uppercase font-bold tracking-widest hover:bg-art-ink hover:text-white transition-all flex items-center justify-center gap-2">
                         01122633026
                     </a>
-                    <a href="https://wa.me/201026933840" target="_blank" class="flex-1 px-8 py-5 bg-art-ink text-white text-[10px] uppercase font-bold tracking-widest hover:bg-art-accent transition-all">
+                    <a href="https://wa.me/201026933840" target="_blank" class="flex-1 px-8 py-5 bg-art-ink text-white text-[10px] uppercase font-bold tracking-widest hover:bg-art-accent transition-all flex items-center justify-center gap-2">
                         WhatsApp
                     </a>
                 </div>
             </div>
         </footer>
-    </div>
-
-    <!-- ADMIN PANEL -->
-    <div x-show="view === 'admin'" x-cloak class="min-h-screen">
-        <!-- Login Screen -->
-        <div x-show="!isLoggedIn" class="min-h-screen flex items-center justify-center p-6 bg-art-bg">
-            <div class="bg-white w-full max-w-sm p-12 shadow-2xl relative fade-in border border-art-ink/5">
-                <h2 class="text-3xl serif-italic mb-8">Admin Access</h2>
-                <form @submit.prevent="login()" class="space-y-6 text-right" dir="rtl">
-                    <div>
-                        <label class="block text-[10px] uppercase font-bold tracking-widest mb-2 opacity-40">البريد الإلكتروني</label>
-                        <input type="email" x-model="adminEmail" class="w-full border-b border-art-ink/20 py-2 outline-none focus:border-art-accent bg-transparent text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] uppercase font-bold tracking-widest mb-2 opacity-40">كلمة المرور</label>
-                        <input type="password" x-model="adminPass" class="w-full border-b border-art-ink/20 py-2 outline-none focus:border-art-accent bg-transparent text-sm">
-                    </div>
-                    <p x-show="error" x-text="error" class="text-red-500 text-[10px] italic"></p>
-                    <button type="submit" class="w-full py-4 bg-art-ink text-white text-[10px] uppercase font-black tracking-[0.3em] hover:bg-art-accent">دخول</button>
-                    <button @click="view = 'site'" type="button" class="w-full text-[8px] uppercase tracking-widest opacity-30 mt-4 h-10 hover:opacity-100 transition-opacity">العودة للموقع</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Dashboard -->
-        <div x-show="isLoggedIn" class="min-h-screen bg-art-bg flex flex-col">
-            <header class="p-8 border-b border-art-ink/10 flex justify-between items-center bg-white sticky top-0 z-10 font-bold">
-                <h2 class="text-2xl serif-italic">لوحة التحكم</h2>
-                <div class="flex gap-4">
-                    <button @click="saveInventory()" class="px-8 py-3 bg-green-600 text-white text-[10px] uppercase font-black tracking-widest hover:bg-green-700">حفظ التعديلات</button>
-                    <button @click="logout()" class="px-8 py-3 border border-red-500/20 text-red-500 text-[10px] uppercase font-black tracking-widest hover:bg-red-50">خروج</button>
-                </div>
-            </header>
-            
-            <div class="flex-1 p-12 max-w-7xl mx-auto w-full">
-                <div class="flex justify-between items-center mb-12">
-                    <h3 class="text-[10px] uppercase font-black tracking-[0.5em] opacity-30">كتالوج الأعمال</h3>
-                    <button @click="openWidget()" class="bg-art-ink text-white px-8 py-3 text-[10px] uppercase font-black tracking-widest">+ رفع صورة جديدة</button>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-right" dir="rtl">
-                    <template x-for="(art, idx) in tempArt" :key="idx">
-                        <div class="bg-white p-6 border border-art-ink/5 shadow-sm group">
-                            <div class="aspect-square bg-neutral-100 mb-6 overflow-hidden relative">
-                                <img :src="art.image" class="w-full h-full object-cover">
-                                <button @click="deleteArt(idx)" class="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <i data-lucide="trash-2" class="w-3 h-3"></i>
-                                </button>
-                            </div>
-                            <div class="space-y-4">
-                                <input x-model="art.title" class="w-full border-b border-art-ink/10 py-1 text-sm font-bold serif-italic outline-none focus:border-art-accent" placeholder="العنوان">
-                                <input x-model="art.price" class="w-full border-b border-art-ink/10 py-1 text-[10px] uppercase font-black text-art-accent outline-none" placeholder="السعر">
-                                <div class="grid grid-cols-2 gap-4">
-                                    <input x-model="art.year" class="w-full border-b text-[10px] py-1 outline-none" placeholder="السنة">
-                                    <input x-model="art.medium" class="w-full border-b text-[10px] py-1 outline-none" placeholder="الخامة">
-                                </div>
-                                <input x-model="art.dimensions" class="w-full border-b text-[10px] py-1 outline-none" placeholder="الأبعاد">
-                            </div>
-                        </div>
-                    </template>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- ARTWORK MODAL -->
@@ -280,99 +242,146 @@
                 <img :src="selectedArt?.image" :alt="selectedArt?.title" class="max-w-full max-h-[70vh] shadow-2xl">
             </div>
 
-            <div class="lg:w-2/5 p-12 md:p-20 flex flex-col text-right" dir="rtl">
+            <div class="lg:w-2/5 p-12 md:p-20 flex flex-col" :class="lang === 'ar' ? 'text-right' : ''">
                 <div class="flex-1">
                     <h3 class="text-4xl md:text-6xl serif-italic mb-4" x-text="selectedArt?.title"></h3>
                     <p class="text-2xl text-art-accent font-bold mb-10" x-text="selectedArt?.price"></p>
                     
-                    <p x-show="selectedArt?.description" class="text-lg italic serif-italic opacity-60 mb-12" x-text="selectedArt?.description"></p>
+                    <div x-show="selectedArt?.description" class="p-6 bg-art-ink/5 italic serif-italic text-lg mb-12 border-l-4 border-art-accent">
+                        <p x-text="selectedArt?.description"></p>
+                    </div>
 
                     <div class="space-y-6 pt-12 border-t border-art-ink/10 text-[10px] uppercase font-bold tracking-[0.2em] opacity-80">
                         <div class="flex justify-between border-b border-art-ink/5 pb-4">
-                            <span class="opacity-40">الأبعاد</span>
-                            <span dir="ltr" x-text="selectedArt?.dimensions"></span>
+                            <span class="opacity-40" x-text="t('label-dims')"></span>
+                            <span x-text="selectedArt?.dimensions"></span>
                         </div>
                         <div class="flex justify-between border-b border-art-ink/5 pb-4">
-                            <span class="opacity-40">الخامة</span>
+                            <span class="opacity-40" x-text="t('label-medium')"></span>
                             <span x-text="selectedArt?.medium"></span>
                         </div>
                         <div class="flex justify-between border-b border-art-ink/5 pb-4">
-                            <span class="opacity-40">السنة</span>
+                            <span class="opacity-40" x-text="t('label-year')"></span>
                             <span x-text="selectedArt?.year"></span>
                         </div>
-                        <div class="flex justify-between border-b border-art-ink/5 pb-4">
-                            <span class="opacity-40">الحالة</span>
-                            <span class="text-green-700">جاهزة للتعليق ✓</span>
-                        </div>
-                        <div class="flex justify-between border-b border-art-ink/5 pb-4">
-                            <span class="opacity-40">التوصيل</span>
-                            <span>مجاني — بواسطة الفنان 🚚</span>
-                        </div>
-                        <div class="flex justify-between border-b border-art-ink/5 pb-4">
-                            <span class="opacity-40">الإطار</span>
-                            <span>خشب طبيعي · اللون حسب الطلب</span>
-                        </div>
+                    </div>
+
+                    <!-- Visitor Inquiry -->
+                    <div class="mt-12 space-y-4">
+                        <label class="block text-[10px] uppercase font-black tracking-widest opacity-40 mb-2" x-text="t('label-message')"></label>
+                        <textarea x-model="visitorMessage" :placeholder="t('message-placeholder')" class="w-full p-4 bg-white border border-art-ink/10 text-sm outline-none focus:border-art-accent min-h-[100px] resize-none"></textarea>
                     </div>
                 </div>
 
                 <div class="mt-12">
-                    <a :href="`https://wa.me/201026933840?text=Hello, I am interested in &quot;${selectedArt?.title}&quot; (${selectedArt?.price}). Is it available?`" 
-                       target="_blank" class="block w-full bg-art-ink text-white py-5 text-[10px] uppercase font-black tracking-[0.3em] text-center hover:bg-art-accent transition-all">
-                        الاستفسار عبر واتساب
-                    </a>
+                    <button @click="sendArtInquiry()" class="block w-full bg-art-ink text-white py-5 text-[10px] uppercase font-black tracking-[0.3em] text-center hover:bg-art-accent transition-all" x-text="t('form-submit')"></button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- SCRIPT -->
+    <!-- SCRIPTS -->
     <script>
+        const TRANSLATIONS = {
+            en: {
+                'nav-gallery': 'Gallery',
+                'nav-commission': 'Commission',
+                'nav-about': 'About',
+                'nav-contact': 'Contact',
+                'hero-tagline': 'Where the Nile meets the canvas',
+                'artist-name': 'Osman Rafaat',
+                'artist-subtitle': 'Visual Artist · Minya, Egypt',
+                'hero-quote': 'Where the Nile meets the canvas',
+                'section-gallery': 'Selected Works',
+                'loading': 'Loading atmosphere...',
+                'coming-soon': 'New works coming soon.',
+                'view-piece': 'View Piece',
+                'artist-statement': 'Artist Statement',
+                'about-title': 'The Nile runs past my window.',
+                'about-p1': 'I grew up in a village in Minya, Upper Egypt — where the river is not a metaphor, it is a neighbor. Where ancient walls speak in three languages at once: Pharaonic, Islamic, Coptic.',
+                'about-p2': 'I studied at the Faculty of Specific Education, Fine Arts Department, Assiut University, but I have always painted from instinct before theory. I am drawn to heritage — not as nostalgia, but as a living thing. Something still breathing in the mud-brick walls, in the geometry of a minaret, in the face of a farmer at dusk.',
+                'about-p3': 'My style is not yet complete — and that is precisely what makes every painting different from the one before it.',
+                'about-quote': 'Everything I paint begins here.',
+                'section-commission': 'Commission a Piece',
+                'commission-desc': 'Whether a landscape, a heritage-inspired piece, or a specific size to fit your space—I welcome custom inquiries that resonate with the spirit of the Nile.',
+                'form-name': 'Full Name',
+                'form-email': 'Email Address',
+                'form-vision': 'Your Vision / Details',
+                'form-submit': 'Send via WhatsApp',
+                'footer-copy': '© 2026 Osman Rafaat · All Rights Reserved',
+                'label-dims': 'Dimensions',
+                'label-medium': 'Medium',
+                'label-year': 'Year',
+                'label-message': 'Your Message / Question',
+                'message-placeholder': 'Is this piece still available? I would like to know more about its history...'
+            },
+            ar: {
+                'nav-gallery': 'المعرض',
+                'nav-commission': 'طلب خاص',
+                'nav-about': 'عن الفنان',
+                'nav-contact': 'تواصل',
+                'hero-tagline': 'حيث يلتقي النيل باللوحة',
+                'artist-name': 'عثمان رأفت',
+                'artist-subtitle': 'فنان تشكيلي · المنيا، مصر',
+                'hero-quote': 'حيث يلتقي النيل باللوحة',
+                'section-gallery': 'أعمال مختارة',
+                'loading': 'جاري تحميل الأعمال...',
+                'coming-soon': 'أعمال جديدة قريباً.',
+                'view-piece': 'عرض اللوحة',
+                'artist-statement': 'رؤية فنية',
+                'about-title': 'النيل يجري أمام نافذتي.',
+                'about-p1': 'نشأت في قرية في المنيا، صعيد مصر — حيث النهر ليس استعارة، بل جار. حيث الجدران القديمة تتحدث بثلاث لغات في آن واحد: فرعونية، إسلامية، قبطية.',
+                'about-p2': 'درست في كلية التربية النوعية، قسم التربية الفنية، جامعة أسيوط، لكنني دائمًا ما أرسم بالفطرة قبل النظرية. تنجذب روحي للتراث — ليس كحنين، ولكن كشيء حي. شيء لا يزال ينبض بين جدران الطوب اللبن، وفي هندسة المآذن، وفي وجه فلاح وقت الغسق.',
+                'about-p3': 'أسلوبي لم يكتمل بعد — وهذا بالضبط ما يجعل كل لوحة مختلفة عن سابقتها.',
+                'about-quote': 'كل ما أرسمه يبدأ من هنا.',
+                'section-commission': 'اطلب عملك الخاص',
+                'commission-desc': 'سواء كان منظراً طبيعياً، أو عملاً مستوحى من التراث، أو مقاساً معيناً يناسب مساحتك - أرحب بالطلبات الخاصة التي تحمل نبض النيل.',
+                'form-name': 'الاسم الكامل',
+                'form-email': 'البريد الإلكتروني',
+                'form-vision': 'تخيلك للعمل / التفاصيل',
+                'form-submit': 'إرسال عبر واتساب',
+                'footer-copy': '© 2026 عثمان رأفت · جميع الحقوق محفوظة',
+                'label-dims': 'الأبعاد',
+                'label-medium': 'الخامة',
+                'label-year': 'السنة',
+                'label-message': 'رسالتك / استفسارك',
+                'message-placeholder': 'هل هذه اللوحة متاحة؟ أود معرفة المزيد من التفاصيل عنها...'
+            }
+        };
+
         function osmanArt() {
             return {
-                view: 'site',
+                lang: localStorage.getItem('osman_lang') || 'en',
                 loading: true,
-                isLoggedIn: false,
-                adminEmail: '',
-                adminPass: '',
-                error: '',
                 mobileMenu: false,
                 showModal: false,
                 selectedArt: null,
+                visitorMessage: '',
                 artworks: [],
-                tempArt: [],
+                commForm: { name: '', email: '', vision: '' },
 
                 init() {
-                    if(window.location.hash === '#admin') this.view = 'admin';
-                    window.addEventListener('hashchange', () => {
-                        this.view = window.location.hash === '#admin' ? 'admin' : 'site';
-                        if(this.view === 'admin' && this.isLoggedIn) {
-                            this.tempArt = JSON.parse(JSON.stringify(this.artworks));
-                        }
-                    });
-
-                    if(localStorage.getItem('osman_verified') === 'true') this.isLoggedIn = true;
                     this.sync();
-
                     setTimeout(() => lucide.createIcons(), 500);
+                },
+
+                t(key) {
+                    return TRANSLATIONS[this.lang][key] || key;
+                },
+
+                toggleLang() {
+                    this.lang = this.lang === 'en' ? 'ar' : 'en';
+                    localStorage.setItem('osman_lang', this.lang);
                 },
 
                 async sync() {
                     this.loading = true;
-                    const cache = localStorage.getItem('osman_art_cache');
-                    if(cache) {
-                        this.artworks = JSON.parse(cache);
-                        this.tempArt = JSON.parse(cache);
-                        this.loading = false;
-                        return;
-                    }
-
                     try {
                         const res = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQeGGt3B9cfx5H5dmh7-QjYUDmzRXML49qSvN1pfD-XfACTPKOX4TXVQA6FqkNumM-fSZ5TxmxdeWuH/pub?output=csv');
                         const text = await res.text();
                         this.artworks = this.parseCSV(text);
-                        this.tempArt = JSON.parse(JSON.stringify(this.artworks));
                     } catch (e) {
-                        console.error('Remote sync failed', e);
+                        console.error('Sync failed', e);
                     }
                     this.loading = false;
                 },
@@ -385,94 +394,69 @@
                         const result = [];
                         let cell = '';
                         let inQuotes = false;
-
                         for (let i = 0; i < line.length; i++) {
                             const char = line[i];
-                            if (char === '"' && line[i+1] === '"') {
-                                cell += '"';
-                                i++;
-                            } else if (char === '"') {
-                                inQuotes = !inQuotes;
-                            } else if (char === ',' && !inQuotes) {
-                                result.push(cell.trim());
-                                cell = '';
-                            } else {
-                                cell += char;
-                            }
+                            if (char === '"' && line[i+1] === '"') { cell += '"'; i++; }
+                            else if (char === '"') inQuotes = !inQuotes;
+                            else if (char === ',' && !inQuotes) { result.push(cell.trim()); cell = ''; }
+                            else cell += char;
                         }
                         result.push(cell.trim());
 
                         if (result.length < 7) return null;
-
                         const art = {
-                            id: result[0],
-                            title: result[1],
-                            year: result[2],
-                            medium: result[3],
-                            price: result[4],
-                            dimensions: result[5],
-                            image: result[6],
+                            id: result[0], title: result[1], year: result[2], medium: result[3],
+                            price: result[4], dimensions: result[5], image: result[6],
                             description: result[7] || ''
                         };
-
+                        // Filter out logo if it mistakenly appears as artwork in CSV
                         if (art.image === LOGO_URL) return null;
-
                         return art;
                     }).filter(Boolean);
                 },
 
                 openArt(art) {
                     this.selectedArt = art;
+                    this.visitorMessage = '';
                     this.showModal = true;
+                    // Reset scroll for body
+                    document.body.style.overflow = 'hidden';
                     setTimeout(() => lucide.createIcons(), 50);
                 },
 
-                login() {
-                    if(this.adminEmail === 'osmanrafaat05@gmail.com' && this.adminPass === 'Osman2024') {
-                        this.isLoggedIn = true;
-                        this.error = '';
-                        this.tempArt = JSON.parse(JSON.stringify(this.artworks));
-                        localStorage.setItem('osman_verified', 'true');
-                    } else {
-                        this.error = 'بيانات الدخول غير صحيحة';
-                    }
+                async closeArt() {
+                    this.showModal = false;
+                    document.body.style.overflow = 'auto';
                 },
 
-                logout() {
-                    this.isLoggedIn = false;
-                    localStorage.removeItem('osman_verified');
-                    window.location.hash = '';
+                sendArtInquiry() {
+                    const text = `Hello Osman, I am interested in your artwork:
+Title: ${this.selectedArt.title}
+Price: ${this.selectedArt.price}
+Dimensions: ${this.selectedArt.dimensions}
+Medium: ${this.selectedArt.medium}
+
+Message from visitor: 
+${this.visitorMessage || 'None provided'}
+
+View work: ${this.selectedArt.image}`;
+
+                    const url = `https://wa.me/201026933840?text=${encodeURIComponent(text)}`;
+                    window.open(url, '_blank');
                 },
 
-                openWidget() {
-                    const widget = cloudinary.createUploadWidget({
-                        cloudName: 'dz7wu111o', 
-                        uploadPreset: 'osman_art'
-                    }, (err, res) => {
-                        if (!err && res && res.event === "success") {
-                            this.tempArt.unshift({
-                                title: 'عمل جديد',
-                                image: res.info.secure_url,
-                                price: 'تواصل مع الفنان',
-                                year: new Date().getFullYear().toString(),
-                                medium: 'خامة غير محددة',
-                                dimensions: 'غير محدد'
-                            });
-                        }
-                    });
-                    widget.open();
-                },
+                sendCommission() {
+                    const text = `Hello Osman, I would like to commission a custom artwork:
+Name: ${this.commForm.name}
+Email: ${this.commForm.email}
 
-                deleteArt(idx) {
-                    if(confirm('هل تريد حذف هذا العمل؟')) this.tempArt.splice(idx, 1);
-                },
+Vision/Description:
+${this.commForm.vision}`;
 
-                saveInventory() {
-                    this.artworks = JSON.parse(JSON.stringify(this.tempArt));
-                    localStorage.setItem('osman_art_cache', JSON.stringify(this.artworks));
-                    alert('تم مزامنة المعرض بنجاح.');
-                    this.view = 'site';
-                    window.location.hash = '';
+                    const url = `https://wa.me/201026933840?text=${encodeURIComponent(text)}`;
+                    window.open(url, '_blank');
+                    // Reset form
+                    this.commForm = { name: '', email: '', vision: '' };
                 }
             }
         }
