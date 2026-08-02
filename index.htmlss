@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Osman Rafaat | Visual Artist</title>
+    <title>Osman Rafaat | Visual Artist</title><!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-57P5FH8434"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-57P5FH8434');
+</script>
     
     <!-- Scripts -->
     <script src="https://cdn.tailwindcss.com"></script>
