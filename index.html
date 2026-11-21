@@ -45,7 +45,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Inter:wght@200;300;400;500;600&family=Noto+Sans+Arabic:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <style>
         [x-cloak] { display: none !important; }
@@ -70,6 +70,11 @@
         [dir="rtl"] .modal-row-label { border-right: 2px solid #8b7355; padding-right: 1rem; border-left: 0; padding-left: 0; }
         [dir="ltr"] .modal-row-label { border-left: 2px solid #8b7355; padding-left: 1rem; border-right: 0; padding-right: 0; }
         
+        [dir="rtl"] body, [dir="rtl"] .serif-italic { font-family: 'Noto Sans Arabic', sans-serif; font-style: normal; }
+        [dir="rtl"] [class*="tracking-"] { letter-spacing: normal; }
+        [dir="rtl"] nav a, [dir="rtl"] nav button { font-size: 12px; }
+        [dir="rtl"] h1 { line-height: 1.5; }
+        [dir="rtl"] h3 { line-height: 1.7; }
         .site-logo { filter: none !important; opacity: 1 !important; transform: none !important; }
 
         /* ===== New Hero (Museum-style split layout) ===== */
@@ -189,11 +194,11 @@
                             <div class="mt-8 flex justify-between items-start gap-4">
                                 <div class="max-w-[70%]">
                                     <h3 class="text-2xl serif-italic font-medium leading-none mb-3" x-text="displayTitle(art)"></h3>
-                                    <p x-show="art.medium || art.year" class="text-[10px] uppercase font-black text-art-ink/30 tracking-[0.2em]" x-text="[art.medium, art.year].filter(Boolean).join(' · ')"></p>
-                                    <p x-show="art.dimensions" class="text-[10px] uppercase font-bold text-art-ink/40 tracking-[0.2em] mt-2" x-text="art.dimensions"></p>
+                                    <p x-show="art.medium || art.year" class="text-[10px] uppercase font-black text-art-ink/30 tracking-[0.2em]" x-text="[displayMedium(art), art.year].filter(Boolean).join(' · ')"></p>
+                                    <p x-show="art.dimensions" class="text-[10px] uppercase font-bold text-art-ink/40 tracking-[0.2em] mt-2" x-text="displayDimensions(art)"></p>
                                 </div>
                                 <div class="shrink-0" :class="lang === 'ar' ? 'text-left' : 'text-right'">
-                                    <p x-show="art.price && art.status !== 'collected'" class="text-sm font-medium" x-text="art.price"></p>
+                                    <p x-show="art.price && art.status !== 'collected'" class="text-sm font-medium" x-text="displayPrice(art)"></p>
                                     <p x-show="art.status === 'available'" class="text-[9px] uppercase font-black tracking-[0.2em] text-art-accent mt-1" x-text="t('label-available')"></p>
                                     <p x-show="art.status === 'collected'" class="text-[9px] uppercase font-black tracking-[0.2em] text-art-ink/35 mt-1" x-text="t('label-collected')"></p>
                                 </div>
@@ -332,20 +337,20 @@
                     <p x-show="selectedArt?.status === 'available'" class="text-[10px] uppercase font-black tracking-[0.3em] text-art-accent mb-8" x-text="t('modal-status')"></p>
                     <p x-show="selectedArt?.status === 'collected'" class="text-[10px] uppercase font-black tracking-[0.3em] text-art-ink/40 mb-8" x-text="t('modal-status-collected')"></p>
                     <div x-show="selectedArt?.description" class="p-6 bg-art-ink/5 italic serif-italic text-lg mb-12 border-l-4 border-art-accent">
-                        <p x-text="selectedArt?.description"></p>
+                        <p x-text="displayDescription(selectedArt)"></p>
                     </div>
                     <div class="space-y-6 pt-12 border-t border-art-ink/10 text-[10px] uppercase font-bold tracking-[0.2em] opacity-80">
                         <div class="flex justify-between border-b border-art-ink/5 pb-4" x-show="selectedArt?.dimensions">
                             <span class="opacity-40" x-text="t('label-dims')"></span>
-                            <span x-text="selectedArt?.dimensions"></span>
+                            <span x-text="displayDimensions(selectedArt)"></span>
                         </div>
                         <div class="flex justify-between border-b border-art-ink/5 pb-4" x-show="selectedArt?.price && selectedArt?.status !== 'collected'">
                             <span class="opacity-40" x-text="t('label-price')"></span>
-                            <span x-text="selectedArt?.price"></span>
+                            <span x-text="displayPrice(selectedArt)"></span>
                         </div>
                         <div class="flex justify-between border-b border-art-ink/5 pb-4" x-show="selectedArt?.medium">
                             <span class="opacity-40" x-text="t('label-medium')"></span>
-                            <span x-text="selectedArt?.medium"></span>
+                            <span x-text="displayMedium(selectedArt)"></span>
                         </div>
                         <div class="flex justify-between border-b border-art-ink/5 pb-4" x-show="selectedArt?.year">
                             <span class="opacity-40" x-text="t('label-year')"></span>
@@ -436,7 +441,26 @@
                 commForm: { name: '', email: '', subject: '', vision: '' },
                 init() { this.loadArtworks(); setTimeout(() => lucide.createIcons(), 500); },
                 t(key) { return TRANSLATIONS[this.lang][key] || key; },
-                displayTitle(art) { if (!art) return ''; return art.title === 'Artwork (details pending)' ? (this.lang === 'ar' ? 'عمل فني (التفاصيل قريبًا)' : art.title) : art.title; },
+                displayTitle(art) {
+                    if (!art) return '';
+                    if (this.lang !== 'ar') return art.title;
+                    const names = { '1': 'عالم آخر', '3': 'سيمفونية الطيور', '4': 'الطاووس', '5': 'الفلوكة', '6': 'دراسة بورتريه ليوناردو' };
+                    return names[art.id] || (art.title === 'Artwork (details pending)' ? 'عمل فني (التفاصيل قريبًا)' : art.title);
+                },
+                displayMedium(art) {
+                    if (!art?.medium) return '';
+                    if (this.lang !== 'ar') return art.medium;
+                    const media = { 'Acrylic on linen fabric': 'أكريليك على قماش كتان', 'Mix Media Acrylic and Embroidery': 'أكريليك وتطريز', 'Faber-Castell on 500gsm paper': 'ألوان فابر كاستل على ورق 500 جرام' };
+                    return media[art.medium] || art.medium;
+                },
+                displayDescription(art) {
+                    if (!art) return '';
+                    if (this.lang !== 'ar') return art.description;
+                    const descriptions = { '1': 'طيور ونباتات بألوان الأكريليك على الكتان.', '3': 'ألوان أكريليك مع تطريز يدوي.', '4': 'طواويس بألوان الأكريليك على الكتان.', '5': 'مستوحاة من النيل.', '6': 'دراسة شخصية لبورتريه ليوناردو دافنشي.' };
+                    return descriptions[art.id] || art.description;
+                },
+                displayDimensions(art) { return this.lang === 'ar' ? (art?.dimensions || '').replace('cm', 'سم') : art?.dimensions; },
+                displayPrice(art) { return this.lang === 'ar' ? (art?.price || '').replace('EGP', 'جنيه') : art?.price; },
                 toggleLang() { this.lang = this.lang === 'en' ? 'ar' : 'en'; localStorage.setItem('osman_lang', this.lang); },
                 async loadArtworks() {
                     this.loading = true;
