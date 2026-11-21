@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Osman Rafaat | Visual Artist</title>
-    <meta name="description" content="Osman Rafaat - contemporary Egyptian visual artist from Minya, Upper Egypt. Original paintings inspired by the Nile and Egyptian heritage, available on Saatchi Art.">
+    <meta name="description" content="Paintings and drawings by Osman Rafaat, a visual artist from Minya, Egypt. Browse the works and ask about availability.">
     <meta property="og:title" content="Osman Rafaat | Visual Artist">
-    <meta property="og:description" content="Original paintings from Upper Egypt: the Nile, heritage, and contemporary Egyptian fine art. Available on Saatchi Art.">
+    <meta property="og:description" content="Paintings and drawings by Osman Rafaat. Browse the works and contact the artist.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://osmanrafaat.github.io/osman-fine-art/">
     <meta property="og:image" content="https://osmanrafaat.github.io/osman-fine-art/art/24-another-world.jpg">
@@ -188,7 +188,7 @@
                             </div>
                             <div class="mt-8 flex justify-between items-start gap-4">
                                 <div class="max-w-[70%]">
-                                    <h3 class="text-2xl serif-italic font-medium leading-none mb-3" x-text="art.title"></h3>
+                                    <h3 class="text-2xl serif-italic font-medium leading-none mb-3" x-text="displayTitle(art)"></h3>
                                     <p x-show="art.medium || art.year" class="text-[10px] uppercase font-black text-art-ink/30 tracking-[0.2em]" x-text="[art.medium, art.year].filter(Boolean).join(' · ')"></p>
                                     <p x-show="art.dimensions" class="text-[10px] uppercase font-bold text-art-ink/40 tracking-[0.2em] mt-2" x-text="art.dimensions"></p>
                                 </div>
@@ -328,7 +328,7 @@
             </div>
             <div class="lg:w-2/5 p-12 md:p-20 flex flex-col" :class="lang === 'ar' ? 'text-right' : ''">
                 <div class="flex-1">
-                    <h3 class="text-4xl md:text-6xl serif-italic mb-4" x-text="selectedArt?.title"></h3>
+                    <h3 class="text-4xl md:text-6xl serif-italic mb-4" x-text="displayTitle(selectedArt)"></h3>
                     <p x-show="selectedArt?.status === 'available'" class="text-[10px] uppercase font-black tracking-[0.3em] text-art-accent mb-8" x-text="t('modal-status')"></p>
                     <p x-show="selectedArt?.status === 'collected'" class="text-[10px] uppercase font-black tracking-[0.3em] text-art-ink/40 mb-8" x-text="t('modal-status-collected')"></p>
                     <div x-show="selectedArt?.description" class="p-6 bg-art-ink/5 italic serif-italic text-lg mb-12 border-l-4 border-art-accent">
@@ -436,6 +436,7 @@
                 commForm: { name: '', email: '', subject: '', vision: '' },
                 init() { this.loadArtworks(); setTimeout(() => lucide.createIcons(), 500); },
                 t(key) { return TRANSLATIONS[this.lang][key] || key; },
+                displayTitle(art) { if (!art) return ''; return art.title === 'Artwork (details pending)' ? (this.lang === 'ar' ? 'عمل فني (التفاصيل قريبًا)' : art.title) : art.title; },
                 toggleLang() { this.lang = this.lang === 'en' ? 'ar' : 'en'; localStorage.setItem('osman_lang', this.lang); },
                 async loadArtworks() {
                     this.loading = true;
