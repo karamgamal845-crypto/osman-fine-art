@@ -423,12 +423,12 @@
             { id: '3', title: 'Birds Symphony', year: '2026', medium: 'Mix Media Acrylic and Embroidery', price: '16500 EGP', dimensions: '100 × 100 cm', image: 'art/32-birds-symphony.jpg', description: "Acrylic painting with hand embroidery.", status: 'collected', type: '' },
             { id: '4', title: 'The Peacock', year: '2026', medium: 'Acrylic on linen fabric', price: '15000 EGP', dimensions: '100 × 100 cm', image: 'art/the-peacock.svg', description: "Peacocks in acrylic on linen.", status: 'collected', type: '' },
             { id: '5', title: 'El Falooka', year: '2026', medium: 'Acrylic on linen fabric', price: '30000 EGP', dimensions: '100 × 100 cm', image: 'art/33-el-falooka.jpg', description: "Inspired by the Nile.", status: 'available', type: '' },
-            { id: '6', title: 'Leonardo portrait study', year: '', medium: 'Faber-Castell on 500gsm paper', price: '', dimensions: '30 × 25 cm', image: 'art/31-untitled-1.jpg', description: "A personal study of a Leonardo da Vinci portrait.", status: 'available', type: '' },
-            { id: '7', title: 'Artwork (details pending)', year: '', medium: '', price: '', dimensions: '', image: 'art/30-untitled-2.jpg', description: '', status: '', type: '' },
-            { id: '8', title: 'Artwork (details pending)', year: '', medium: '', price: '', dimensions: '', image: 'art/29-untitled-3.jpg', description: '', status: '', type: '' },
-            { id: '9', title: 'Artwork (details pending)', year: '', medium: '', price: '', dimensions: '', image: 'art/27-untitled-4.jpg', description: '', status: '', type: '' },
-            { id: '10', title: 'Artwork (details pending)', year: '', medium: '', price: '', dimensions: '', image: 'art/25-untitled-5.jpg', description: '', status: '', type: '' },
-            { id: '12', title: 'Artwork (details pending)', year: '', medium: '', price: '', dimensions: '', image: 'art/26-untitled-7.jpg', description: '', status: '', type: '' },
+            { id: '6', title: 'Leonardo da Vinci', year: '2025', medium: 'Faber-Castell colored pencils on 500gsm paper', price: '', dimensions: '30 × 25 cm (circle 7 cm)', image: 'art/31-untitled-1.jpg', description: "Redrawn study of Leonardo da Vinci. From his Art Project series: pioneers of the art schools.", status: 'available', type: '' },
+            { id: '7', title: 'Gustave Courbet II', year: '2025', medium: 'Faber-Castell colored pencils on 500gsm paper', price: '', dimensions: '30 × 25 cm (circle 7 cm)', image: 'art/30-untitled-2.jpg', description: "Pioneer of Realism, redrawn in his style. From his Art Project series.", status: 'available', type: '' },
+            { id: '8', title: 'Henri Matisse', year: '2025', medium: 'Faber-Castell colored pencils on 500gsm paper', price: '', dimensions: '30 × 25 cm (circle 7 cm)', image: 'art/29-untitled-3.jpg', description: "Pioneer of Fauvism, redrawn in his style. From his Art Project series.", status: 'available', type: '' },
+            { id: '9', title: 'Claude Monet', year: '2025', medium: 'Faber-Castell colored pencils on 500gsm paper', price: '', dimensions: '30 × 25 cm (circle 7 cm)', image: 'art/27-untitled-4.jpg', description: "Pioneer of Impressionism, redrawn in his style. From his Art Project series.", status: 'available', type: '' },
+            { id: '10', title: 'Gustave Courbet I', year: '2025', medium: 'Faber-Castell colored pencils on 500gsm paper', price: '', dimensions: '30 × 25 cm (circle 7 cm)', image: 'art/25-untitled-5.jpg', description: "Pioneer of Realism, redrawn in his style. From his Art Project series.", status: 'available', type: '' },
+            { id: '12', title: 'Man with a Crow', year: '2023', medium: 'Oil on canvas', price: '', dimensions: '80 × 60 cm', image: 'art/26-untitled-7.jpg', description: "He added the crow while in a thinking mood.", status: '', type: '' },
             { id: '13', title: 'Artwork (details pending)', year: '', medium: '', price: '', dimensions: '', image: 'art/untitled-8.svg', description: '', status: '', type: '' },
             { id: '14', title: 'Artwork (details pending)', year: '', medium: '', price: '', dimensions: '', image: 'art/34-untitled-9.jpg', description: '', status: '', type: '' }
         ];
@@ -444,22 +444,22 @@
                 displayTitle(art) {
                     if (!art) return '';
                     if (this.lang !== 'ar') return art.title;
-                    const names = { '1': 'عالم آخر', '3': 'سيمفونية الطيور', '4': 'الطاووس', '5': 'الفلوكة', '6': 'دراسة بورتريه ليوناردو' };
+                    const names = { '1': 'عالم آخر', '3': 'سيمفونية الطيور', '4': 'الطاووس', '5': 'الفلوكة', '6': 'ليوناردو دافنشي', '7': 'جوستاف كوربيه II', '8': 'هنري ماتيس', '9': 'كلود مونيه', '10': 'جوستاف كوربيه I', '12': 'رجل مع غراب' };
                     return names[art.id] || (art.title === 'Artwork (details pending)' ? 'عمل فني (التفاصيل قريبًا)' : art.title);
                 },
                 displayMedium(art) {
                     if (!art?.medium) return '';
                     if (this.lang !== 'ar') return art.medium;
-                    const media = { 'Acrylic on linen fabric': 'أكريليك على قماش كتان', 'Mix Media Acrylic and Embroidery': 'أكريليك وتطريز', 'Faber-Castell on 500gsm paper': 'ألوان فابر كاستل على ورق 500 جرام' };
+                    const media = { 'Acrylic on linen fabric': 'أكريليك على قماش كتان', 'Mix Media Acrylic and Embroidery': 'أكريليك وتطريز', 'Faber-Castell on 500gsm paper': 'ألوان فابر كاستل على ورق 500 جرام', 'Faber-Castell colored pencils on 500gsm paper': 'ألوان خشبية فابر كاستل على ورق 500 جرام', 'Oil on canvas': 'ألوان زيتية على قماش' };
                     return media[art.medium] || art.medium;
                 },
                 displayDescription(art) {
                     if (!art) return '';
                     if (this.lang !== 'ar') return art.description;
-                    const descriptions = { '1': 'طيور ونباتات بألوان الأكريليك على الكتان.', '3': 'ألوان أكريليك مع تطريز يدوي.', '4': 'طواويس بألوان الأكريليك على الكتان.', '5': 'مستوحاة من النيل.', '6': 'دراسة شخصية لبورتريه ليوناردو دافنشي.' };
+                    const descriptions = { '1': 'طيور ونباتات بألوان الأكريليك على الكتان.', '3': 'ألوان أكريليك مع تطريز يدوي.', '4': 'طواويس بألوان الأكريليك على الكتان.', '5': 'مستوحاة من النيل.', '6': 'دراسة معاد رسمها لليوناردو دافنشي. من سلسلة Art Project: رواد المدارس الفنية.', '7': 'رائد المدرسة الواقعية، أعاد رسمه بأسلوبه. من سلسلة Art Project.', '8': 'رائد المدرسة الوحشية، أعاد رسمه بأسلوبه. من سلسلة Art Project.', '9': 'رائد المدرسة الانطباعية، أعاد رسمه بأسلوبه. من سلسلة Art Project.', '10': 'رائد المدرسة الواقعية، أعاد رسمه بأسلوبه. من سلسلة Art Project.', '12': 'أضاف الغراب وهو في حالة تفكير.' };
                     return descriptions[art.id] || art.description;
                 },
-                displayDimensions(art) { return this.lang === 'ar' ? (art?.dimensions || '').replace('cm', 'سم') : art?.dimensions; },
+                displayDimensions(art) { return this.lang === 'ar' ? (art?.dimensions || '').replaceAll('cm', 'سم').replace('circle', 'قطر الدائرة') : art?.dimensions; },
                 displayPrice(art) { return this.lang === 'ar' ? (art?.price || '').replace('EGP', 'جنيه') : art?.price; },
                 toggleLang() { this.lang = this.lang === 'en' ? 'ar' : 'en'; localStorage.setItem('osman_lang', this.lang); },
                 async loadArtworks() {
