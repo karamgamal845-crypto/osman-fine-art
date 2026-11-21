@@ -8,8 +8,8 @@
     <meta property="og:title" content="Osman Rafaat | Visual Artist">
     <meta property="og:description" content="Original paintings from Upper Egypt: the Nile, heritage, and contemporary Egyptian fine art. Available on Saatchi Art.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://osmaksh.github.io/osman-fine-art/">
-    <meta property="og:image" content="https://res.cloudinary.com/dz7wu111o/image/upload/v1777284743/vr8bw1bftsbke0fbydld.jpg">
+    <meta property="og:url" content="https://osmanrafaat.github.io/osman-fine-art/">
+    <meta property="og:image" content="https://osmanrafaat.github.io/osman-fine-art/art/another-world.jpg">
     <meta name="twitter:card" content="summary_large_image">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-57P5FH8434"></script>
@@ -40,7 +40,6 @@
         }
     </script>
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-    <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <!-- Fonts -->
@@ -103,7 +102,7 @@
     <!-- NAVIGATION -->
     <nav class="fixed top-0 left-0 w-full h-24 z-50 flex items-center justify-between px-6 md:px-16 bg-art-bg/90 backdrop-blur-sm border-b border-art-ink/5">
         <a href="#" @click.prevent="window.scrollTo(0, 0)" class="h-14">
-            <img src="https://res.cloudinary.com/dz7wu111o/image/upload/FB_IMG_1773195017301_mwbetu.jpg" alt="Logo" class="h-full w-auto rounded-full site-logo shadow-sm border border-art-ink/10">
+            <img src="art/logo.jpg" alt="Logo" class="h-full w-auto rounded-full site-logo shadow-sm border border-art-ink/10">
         </a>
         
         <div class="hidden md:flex gap-12 items-center">
@@ -156,7 +155,7 @@
                 <!-- Featured artwork side -->
                 <div class="order-1 lg:order-2 fade-in" style="animation-delay: 150ms">
                     <div class="hero-frame p-3 md:p-5 max-w-md mx-auto lg:max-w-none">
-                        <img src="https://res.cloudinary.com/dz7wu111o/image/upload/v1777284743/vr8bw1bftsbke0fbydld.jpg" alt="Featured Work" class="w-full h-auto shadow-sm">
+                        <img src="art/another-world.jpg" alt="Featured Work" class="w-full h-auto shadow-sm">
                     </div>
                     <p class="text-center mt-6 text-[10px] uppercase tracking-[0.3em] font-bold text-art-ink/40" x-text="t('hero-featured-caption')"></p>
                 </div>
@@ -190,12 +189,13 @@
                             <div class="mt-8 flex justify-between items-start gap-4">
                                 <div class="max-w-[70%]">
                                     <h3 class="text-2xl serif-italic font-medium leading-none mb-3" x-text="art.title"></h3>
-                                    <p class="text-[10px] uppercase font-black text-art-ink/30 tracking-[0.2em]" x-text="`${art.medium} · ${art.year}`"></p>
-                                    <p class="text-[10px] uppercase font-bold text-art-ink/40 tracking-[0.2em] mt-2" x-text="art.dimensions"></p>
+                                    <p x-show="art.medium || art.year" class="text-[10px] uppercase font-black text-art-ink/30 tracking-[0.2em]" x-text="[art.medium, art.year].filter(Boolean).join(' · ')"></p>
+                                    <p x-show="art.dimensions" class="text-[10px] uppercase font-bold text-art-ink/40 tracking-[0.2em] mt-2" x-text="art.dimensions"></p>
                                 </div>
                                 <div class="shrink-0" :class="lang === 'ar' ? 'text-left' : 'text-right'">
-                                    <p class="text-sm font-medium" x-text="art.price"></p>
-                                    <p class="text-[9px] uppercase font-black tracking-[0.2em] text-art-accent mt-1" x-text="t('label-available')"></p>
+                                    <p x-show="art.price" class="text-sm font-medium" x-text="art.price"></p>
+                                    <p x-show="art.status === 'available'" class="text-[9px] uppercase font-black tracking-[0.2em] text-art-accent mt-1" x-text="t('label-available')"></p>
+                                    <p x-show="art.status === 'collected'" class="text-[9px] uppercase font-black tracking-[0.2em] text-art-ink/35 mt-1" x-text="t('label-collected')"></p>
                                 </div>
                             </div>
                         </div>
@@ -236,7 +236,7 @@
             <div class="max-w-4xl mx-auto text-center">
                 <div class="flex flex-col justify-center">
                     <span class="text-art-accent text-[10px] uppercase font-black tracking-[0.4em] mb-12 block" x-text="t('artist-statement')"></span>
-                    <img src="https://res.cloudinary.com/dz7wu111o/image/upload/FB_IMG_1773195017301_mwbetu.jpg" alt="Osman Rafaat" class="w-28 h-28 rounded-full mx-auto mb-10 object-cover border border-white/20">
+                    <img src="art/logo.jpg" alt="Osman Rafaat" class="w-28 h-28 rounded-full mx-auto mb-10 object-cover border border-white/20">
                     <h2 class="text-5xl md:text-8xl serif-italic mb-12 leading-tight" x-text="t('about-title')"></h2>
                     
                     <div class="space-y-8 font-light text-lg md:text-xl leading-relaxed text-white/70">
@@ -248,6 +248,17 @@
                             <p class="serif-italic italic text-3xl text-white inline-block border-l-2 border-art-accent pl-8" 
                                :class="lang === 'ar' ? 'border-l-0 border-r-2 pr-8 pl-0 text-right' : 'text-left'"
                                x-text="t('about-quote')"></p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-16 text-center">
+                            <figure>
+                                <img src="art/about-process.jpg" alt="Osman Rafaat drawing in his studio" class="w-full h-auto shadow-2xl">
+                                <figcaption class="text-[10px] uppercase font-bold tracking-[0.25em] text-white/40 mt-4" x-text="t('about-photo-process')"></figcaption>
+                            </figure>
+                            <figure>
+                                <img src="art/about-exhibition.jpg" alt="Osman Rafaat at an exhibition opening" class="w-full h-auto shadow-2xl">
+                                <figcaption class="text-[10px] uppercase font-bold tracking-[0.25em] text-white/40 mt-4" x-text="t('about-photo-exhibition')"></figcaption>
+                            </figure>
                         </div>
                     </div>
                 </div>
@@ -292,7 +303,7 @@
         <!-- FOOTER -->
         <footer id="contact" class="py-32 px-6 border-t border-art-ink/5 text-center">
             <div class="max-w-2xl mx-auto flex flex-col items-center">
-                <img src="https://res.cloudinary.com/dz7wu111o/image/upload/FB_IMG_1773195017301_mwbetu.jpg" alt="Logo" class="h-24 w-24 rounded-full mb-12 site-logo">
+                <img src="art/logo.jpg" alt="Logo" class="h-24 w-24 rounded-full mb-12 site-logo">
                 <p class="text-[10px] uppercase font-black tracking-[0.4em] mb-12 opacity-30 italic" x-text="t('footer-copy')"></p>
                 
                 <div class="flex flex-col md:flex-row gap-6 w-full">
@@ -325,12 +336,13 @@
             <div class="lg:w-2/5 p-12 md:p-20 flex flex-col" :class="lang === 'ar' ? 'text-right' : ''">
                 <div class="flex-1">
                     <h3 class="text-4xl md:text-6xl serif-italic mb-4" x-text="selectedArt?.title"></h3>
-                    <p class="text-[10px] uppercase font-black tracking-[0.3em] text-art-accent mb-8" x-text="t('modal-status')"></p>
+                    <p x-show="selectedArt?.status === 'available'" class="text-[10px] uppercase font-black tracking-[0.3em] text-art-accent mb-8" x-text="t('modal-status')"></p>
+                    <p x-show="selectedArt?.status === 'collected'" class="text-[10px] uppercase font-black tracking-[0.3em] text-art-ink/40 mb-8" x-text="t('modal-status-collected')"></p>
                     <div x-show="selectedArt?.description" class="p-6 bg-art-ink/5 italic serif-italic text-lg mb-12 border-l-4 border-art-accent">
                         <p x-text="selectedArt?.description"></p>
                     </div>
                     <div class="space-y-6 pt-12 border-t border-art-ink/10 text-[10px] uppercase font-bold tracking-[0.2em] opacity-80">
-                        <div class="flex justify-between border-b border-art-ink/5 pb-4">
+                        <div class="flex justify-between border-b border-art-ink/5 pb-4" x-show="selectedArt?.dimensions">
                             <span class="opacity-40" x-text="t('label-dims')"></span>
                             <span x-text="selectedArt?.dimensions"></span>
                         </div>
@@ -338,11 +350,11 @@
                             <span class="opacity-40" x-text="t('label-price')"></span>
                             <span x-text="selectedArt?.price"></span>
                         </div>
-                        <div class="flex justify-between border-b border-art-ink/5 pb-4">
+                        <div class="flex justify-between border-b border-art-ink/5 pb-4" x-show="selectedArt?.medium">
                             <span class="opacity-40" x-text="t('label-medium')"></span>
                             <span x-text="selectedArt?.medium"></span>
                         </div>
-                        <div class="flex justify-between border-b border-art-ink/5 pb-4">
+                        <div class="flex justify-between border-b border-art-ink/5 pb-4" x-show="selectedArt?.year">
                             <span class="opacity-40" x-text="t('label-year')"></span>
                             <span x-text="selectedArt?.year"></span>
                         </div>
@@ -382,7 +394,7 @@
                 'collect-1-title': 'Choose your piece', 'collect-1-text': 'Browse the gallery and open any work to see its full story, dimensions and price.',
                 'collect-2-title': 'Reserve or buy', 'collect-2-text': 'Message the artist directly on WhatsApp, or buy securely through the Saatchi Art store.',
                 'collect-3-title': 'Delivered to you', 'collect-3-text': 'Every original is one of a kind. Framing and delivery are arranged personally with the artist.',
-                'commission-eyebrow': 'Custom Work', 'modal-status': 'Available · Original, one of a kind'
+                'commission-eyebrow': 'Custom Work', 'modal-status': 'Available · Original, one of a kind', 'modal-status-collected': 'Collected · In a private collection', 'label-collected': 'Collected', 'about-photo-process': 'In the studio', 'about-photo-exhibition': 'At an exhibition opening'
             },
             ar: {
                 'nav-gallery': 'المعرض', 'nav-commission': 'طلب خاص', 'nav-about': 'عن الفنان', 'nav-contact': 'تواصل', 'nav-shop': 'المتجر',
@@ -404,15 +416,24 @@
                 'collect-1-title': 'اختار لوحتك', 'collect-1-text': 'تصفح المعرض وافتح أي لوحة عشان تشوف حكايتها كاملة وأبعادها وسعرها.',
                 'collect-2-title': 'احجز أو اشترِ', 'collect-2-text': 'كلم الفنان مباشرة على واتساب، أو اشترِ بأمان من خلال متجر ساتشي آرت.',
                 'collect-3-title': 'توصل لحد عندك', 'collect-3-text': 'كل لوحة أصلية لا تتكرر، والإطار والتوصيل بيتم الاتفاق عليهم مع الفنان شخصيًا.',
-                'commission-eyebrow': 'أعمال حسب الطلب', 'modal-status': 'متاحة · أصلية لا تتكرر'
+                'commission-eyebrow': 'أعمال حسب الطلب', 'modal-status': 'متاحة · أصلية لا تتكرر', 'modal-status-collected': 'مُقتناة · في مجموعة خاصة', 'label-collected': 'مُقتناة', 'about-photo-process': 'في الاستوديو', 'about-photo-exhibition': 'في افتتاح معرض'
             }
         };
 
         const FALLBACK_ARTWORKS = [
-            { id: '1', title: 'Another World', year: '2026', medium: 'Acrylic on linen fabric', price: '17000 EGP', dimensions: '120 × 200 cm', image: 'https://res.cloudinary.com/dz7wu111o/image/upload/v1777284743/vr8bw1bftsbke0fbydld.jpg', description: 'Original one-of-a-kind artwork · Natural wood frame, color upon request · Free delivery handled personally by the artist', type: '' },
-            { id: '3', title: 'Birds Symphony', year: '2026', medium: 'Mix Media Acrylic and Embroidery', price: '16500 EGP', dimensions: '100 × 100 cm', image: 'https://res.cloudinary.com/dz7wu111o/image/upload/v1777370663/pry6cmmzunwsfhtzky8f.jpg', description: 'An artwork that combines acrylic painting with meticulous hand-embroidered birds on fabric.', type: '' },
-            { id: '4', title: 'The Peacock', year: '2026', medium: 'Acrylic on linen fabric', price: '15000 EGP', dimensions: '100 × 100 cm', image: 'https://res.cloudinary.com/dz7wu111o/image/upload/v1785845434/54953b00-8ffd-11f1-b7ee-7944e6a4b89c_r0aw6m.png', description: 'A peacock painted in acrylic on natural linen fabric. Original one-of-a-kind artwork.', type: '' },
-            { id: '5', title: 'El Falooka', year: '2026', medium: 'Acrylic on linen fabric', price: '17500 EGP', dimensions: '100 × 100 cm', image: 'https://res.cloudinary.com/dz7wu111o/image/upload/v1785845336/927a2e00-8ffb-11f1-b7ee-7944e6a4b89c_j0sgq5.webp', description: "An artwork inspired by the surrounding environment and the family's traditional boat, capturing a deeply personal connection and cherished memories.", type: '' }
+            { id: '1', title: 'Another World', year: '2026', medium: 'Acrylic on linen fabric', price: '17000 EGP', dimensions: '120 × 200 cm', image: 'art/another-world.jpg', description: 'Original one-of-a-kind artwork · Natural wood frame, color upon request · Free delivery handled personally by the artist', status: 'available', type: '' },
+            { id: '3', title: 'Birds Symphony', year: '2026', medium: 'Mix Media Acrylic and Embroidery', price: '16500 EGP', dimensions: '100 × 100 cm', image: 'art/birds-symphony.jpg', description: 'An artwork that combines acrylic painting with meticulous hand-embroidered birds on fabric.', status: 'collected', type: '' },
+            { id: '4', title: 'The Peacock', year: '2026', medium: 'Acrylic on linen fabric', price: '15000 EGP', dimensions: '100 × 100 cm', image: 'art/the-peacock.jpg', description: 'A peacock painted in acrylic on natural linen fabric. Original one-of-a-kind artwork.', status: 'collected', type: '' },
+            { id: '5', title: 'El Falooka', year: '2026', medium: 'Acrylic on linen fabric', price: '30000 EGP', dimensions: '100 × 100 cm', image: 'art/el-falooka.jpg', description: 'A piece of the Nile, inspired by the place I call home.', status: 'available', type: '' },
+            { id: '6', title: 'Leonardo', year: '2026', medium: 'Faber-Castell colored pencils on 500gsm paper', price: '', dimensions: '25 × 30 cm', image: 'art/untitled-1.jpg', description: 'A personal reimagining of a Leonardo da Vinci portrait.', status: 'available', type: '' },
+            { id: '7', title: 'Untitled', year: '', medium: '', price: '', dimensions: '', image: 'art/untitled-2.jpg', description: '', status: '', type: '' },
+            { id: '8', title: 'Untitled', year: '', medium: '', price: '', dimensions: '', image: 'art/untitled-3.jpg', description: '', status: '', type: '' },
+            { id: '9', title: 'Untitled', year: '', medium: '', price: '', dimensions: '', image: 'art/untitled-4.jpg', description: '', status: '', type: '' },
+            { id: '10', title: 'Untitled', year: '', medium: '', price: '', dimensions: '', image: 'art/untitled-5.jpg', description: '', status: '', type: '' },
+            { id: '11', title: 'Untitled', year: '', medium: '', price: '', dimensions: '', image: 'art/untitled-6.jpg', description: '', status: '', type: '' },
+            { id: '12', title: 'Untitled', year: '', medium: '', price: '', dimensions: '', image: 'art/untitled-7.jpg', description: '', status: '', type: '' },
+            { id: '13', title: 'Untitled', year: '', medium: '', price: '', dimensions: '', image: 'art/untitled-8.jpg', description: '', status: '', type: '' },
+            { id: '14', title: 'Untitled', year: '', medium: '', price: '', dimensions: '', image: 'art/untitled-9.jpg', description: '', status: '', type: '' }
         ];
 
         function osmanArt() {
@@ -435,7 +456,7 @@
                     this.loading = false;
                 },
                 parseCSV(text) {
-                    const LOGO_URL = 'https://res.cloudinary.com/dz7wu111o/image/upload/FB_IMG_1773195017301_mwbetu.jpg';
+                    const LOGO_URL = 'art/logo.jpg';
                     const rows = [];
                     let result = [];
                     let cell = '';
@@ -470,18 +491,22 @@
                         rows.push(result);
                     }
 
+                    const header = rows[0].map(h => (h || '').toLowerCase().trim());
+                    const col = name => header.indexOf(name);
+                    const get = (r, name) => { const i = col(name); return i === -1 ? '' : (r[i] || ''); };
                     return rows.slice(1).map(result => {
                         if (result.length < 7) return null;
-                        const art = { 
-                            id: result[0], 
-                            title: result[1], 
-                            year: result[2], 
-                            medium: result[3], 
-                            price: result[4], 
-                            dimensions: result[5], 
-                            image: result[6], 
-                            description: result[7] || '', 
-                            type: (result[8] || '').toLowerCase().trim() 
+                        const art = {
+                            id: get(result, 'id'),
+                            title: get(result, 'title'),
+                            year: get(result, 'year'),
+                            medium: get(result, 'medium'),
+                            price: get(result, 'price'),
+                            dimensions: get(result, 'dimensions'),
+                            image: get(result, 'image'),
+                            description: get(result, 'description'),
+                            status: get(result, 'status').toLowerCase().trim(),
+                            type: get(result, 'type').toLowerCase().trim()
                         };
                         if (art.image === LOGO_URL) return null;
                         return art;
@@ -489,8 +514,11 @@
                 },
                 openArt(art) { this.selectedArt = art; this.visitorMessage = ''; this.showModal = true; setTimeout(() => lucide.createIcons(), 50); },
                 sendArtInquiry() {
-                    const priceInfo = this.selectedArt.price ? `\nالسعر: ${this.selectedArt.price}` : '';
-                    const text = `مرحباً عثمان، أنا مهتم بعملك الفني: ${this.selectedArt.title}\nالأبعاد: ${this.selectedArt.dimensions}${priceInfo}\nالخامة: ${this.selectedArt.medium}\n\nرسالة من الزائر: ${this.visitorMessage}`;
+                    const lines = [`مرحباً عثمان، أنا مهتم بعملك الفني: ${this.selectedArt.title}`];
+                    if (this.selectedArt.dimensions) lines.push(`الأبعاد: ${this.selectedArt.dimensions}`);
+                    if (this.selectedArt.price) lines.push(`السعر: ${this.selectedArt.price}`);
+                    if (this.selectedArt.medium) lines.push(`الخامة: ${this.selectedArt.medium}`);
+                    const text = lines.join('\n') + `\n\nرسالة من الزائر: ${this.visitorMessage}`;
                     window.open(`https://wa.me/201026933840?text=${encodeURIComponent(text)}`, '_blank');
                 },
                 sendCommission() {
