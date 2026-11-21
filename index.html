@@ -8,7 +8,7 @@
     <meta property="og:title" content="Osman Rafaat | Visual Artist">
     <meta property="og:description" content="Original paintings from Upper Egypt: the Nile, heritage, and contemporary Egyptian fine art. Available on Saatchi Art.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://karamgamal845-crypto.github.io/osman-fine-art">
+    <meta property="og:url" content="https://osmaksh.github.io/osman-fine-art/">
     <meta property="og:image" content="https://res.cloudinary.com/dz7wu111o/image/upload/v1777284743/vr8bw1bftsbke0fbydld.jpg">
     <meta name="twitter:card" content="summary_large_image">
 <!-- Google tag (gtag.js) -->
@@ -112,7 +112,7 @@
                 <a href="#commission" class="hover:text-art-accent transition-colors" x-text="t('nav-commission')"></a>
                 <a href="#about" class="hover:text-art-accent transition-colors" x-text="t('nav-about')"></a>
                 <a href="#contact" class="hover:text-art-accent transition-colors" x-text="t('nav-contact')"></a>
-                <a href="https://www.saatchiart.com/osmanrafaatosman" target="_blank" class="hover:text-art-accent transition-colors" x-text="t('nav-shop')"></a>
+                <a href="https://www.saatchiart.com/osmanrafaatosman" target="_blank" class="px-5 py-2.5 bg-art-ink text-white hover:bg-art-accent transition-colors rounded-full" x-text="t('nav-shop')"></a>
             </div>
             
             <button @click="toggleLang()" class="px-4 py-2 border border-art-ink/10 text-[10px] font-bold hover:bg-art-ink hover:text-white transition-all rounded-full min-w-[3rem]" x-text="lang === 'en' ? 'ع' : 'EN'"></button>
@@ -146,8 +146,7 @@
                 <div class="fade-in order-2 lg:order-1" :class="lang === 'ar' ? 'text-right' : 'text-left'">
                     <div class="hero-eyebrow-line text-[10px] uppercase tracking-[0.4em] font-bold text-art-ink/50 mb-10" x-text="t('hero-tagline')"></div>
                     <h1 class="text-6xl md:text-8xl serif-italic font-medium leading-[0.95] mb-8" x-text="t('artist-name')"></h1>
-                    <p class="text-lg md:text-xl font-light opacity-70 mb-3" x-text="t('artist-subtitle')"></p>
-                    <span class="block text-sm italic opacity-50 mb-12" x-text="`&quot;${t('hero-quote')}&quot;`"></span>
+                    <p class="text-lg md:text-xl font-light opacity-70 mb-12" x-text="t('artist-subtitle')"></p>
                     <a href="#gallery" class="inline-flex items-center gap-3 px-8 py-4 border border-art-ink/15 text-[10px] uppercase font-bold tracking-[0.3em] hover:bg-art-ink hover:text-white transition-all">
                         <span x-text="t('section-gallery')"></span>
                         <i data-lucide="arrow-down" class="w-3.5 h-3.5"></i>
@@ -170,6 +169,7 @@
             <div class="max-w-7xl mx-auto">
                 <div class="flex flex-col md:flex-row justify-between items-baseline mb-24">
                     <div class="fade-in">
+                        <span class="text-[10px] uppercase font-black tracking-[0.4em] text-art-ink/40 block mb-6" x-text="t('gallery-eyebrow')"></span>
                         <h2 class="text-5xl md:text-8xl serif-italic mb-6" x-text="t('section-gallery')"></h2>
                         <div class="h-1.5 w-32 bg-art-accent"></div>
                     </div>
@@ -187,14 +187,46 @@
                                     <span class="px-8 py-3 bg-white/10 backdrop-blur-md text-white text-[10px] uppercase font-bold tracking-[0.3em] border border-white/20" x-text="t('view-piece')"></span>
                                 </div>
                             </div>
-                            <div class="mt-8 flex justify-between items-start">
+                            <div class="mt-8 flex justify-between items-start gap-4">
                                 <div class="max-w-[70%]">
                                     <h3 class="text-2xl serif-italic font-medium leading-none mb-3" x-text="art.title"></h3>
                                     <p class="text-[10px] uppercase font-black text-art-ink/30 tracking-[0.2em]" x-text="`${art.medium} · ${art.year}`"></p>
+                                    <p class="text-[10px] uppercase font-bold text-art-ink/40 tracking-[0.2em] mt-2" x-text="art.dimensions"></p>
+                                </div>
+                                <div class="shrink-0" :class="lang === 'ar' ? 'text-left' : 'text-right'">
+                                    <p class="text-sm font-medium" x-text="art.price"></p>
+                                    <p class="text-[9px] uppercase font-black tracking-[0.2em] text-art-accent mt-1" x-text="t('label-available')"></p>
                                 </div>
                             </div>
                         </div>
                     </template>
+                </div>
+            </div>
+        </section>
+
+        <!-- HOW TO COLLECT -->
+        <section id="collect" class="py-24 px-6 md:px-16 lg:px-32 bg-white border-y border-art-ink/5">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <span class="text-[10px] uppercase font-black tracking-[0.4em] text-art-ink/40 block mb-6" x-text="t('collect-eyebrow')"></span>
+                    <h2 class="text-4xl md:text-6xl serif-italic" x-text="t('collect-title')"></h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
+                    <div class="text-center px-4">
+                        <div class="text-art-accent serif-italic text-5xl mb-6">01</div>
+                        <h3 class="text-[11px] uppercase font-black tracking-[0.25em] mb-4" x-text="t('collect-1-title')"></h3>
+                        <p class="text-sm font-light opacity-60 leading-relaxed" x-text="t('collect-1-text')"></p>
+                    </div>
+                    <div class="text-center px-4">
+                        <div class="text-art-accent serif-italic text-5xl mb-6">02</div>
+                        <h3 class="text-[11px] uppercase font-black tracking-[0.25em] mb-4" x-text="t('collect-2-title')"></h3>
+                        <p class="text-sm font-light opacity-60 leading-relaxed" x-text="t('collect-2-text')"></p>
+                    </div>
+                    <div class="text-center px-4">
+                        <div class="text-art-accent serif-italic text-5xl mb-6">03</div>
+                        <h3 class="text-[11px] uppercase font-black tracking-[0.25em] mb-4" x-text="t('collect-3-title')"></h3>
+                        <p class="text-sm font-light opacity-60 leading-relaxed" x-text="t('collect-3-text')"></p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -204,6 +236,7 @@
             <div class="max-w-4xl mx-auto text-center">
                 <div class="flex flex-col justify-center">
                     <span class="text-art-accent text-[10px] uppercase font-black tracking-[0.4em] mb-12 block" x-text="t('artist-statement')"></span>
+                    <img src="https://res.cloudinary.com/dz7wu111o/image/upload/FB_IMG_1773195017301_mwbetu.jpg" alt="Osman Rafaat" class="w-28 h-28 rounded-full mx-auto mb-10 object-cover border border-white/20">
                     <h2 class="text-5xl md:text-8xl serif-italic mb-12 leading-tight" x-text="t('about-title')"></h2>
                     
                     <div class="space-y-8 font-light text-lg md:text-xl leading-relaxed text-white/70">
@@ -225,6 +258,7 @@
         <section id="commission" class="py-32 px-6 md:px-16 lg:px-32 border-t border-art-ink/5">
             <div class="max-w-4xl mx-auto">
                 <div class="text-center mb-16">
+                    <span class="text-[10px] uppercase font-black tracking-[0.4em] text-art-ink/40 block mb-6" x-text="t('commission-eyebrow')"></span>
                     <h2 class="text-4xl md:text-6xl serif-italic mb-8" x-text="t('section-commission')"></h2>
                     <p class="text-lg font-light opacity-70" x-text="t('commission-desc')"></p>
                 </div>
@@ -273,6 +307,7 @@
                     <a href="https://www.saatchiart.com/osmanrafaatosman" target="_blank" class="flex-1 px-8 py-5 border border-art-ink/10 text-[10px] uppercase font-bold tracking-widest hover:bg-art-ink hover:text-white transition-all flex items-center justify-center gap-2" x-text="t('visit-store')"></a>
                     <a href="https://www.instagram.com/osmanrafaatosman" target="_blank" class="flex-1 px-8 py-5 border border-art-ink/10 text-[10px] uppercase font-bold tracking-widest hover:bg-art-ink hover:text-white transition-all flex items-center justify-center gap-2">Instagram</a>
                 </div>
+                <a href="mailto:osmanrafaat05@gmail.com" class="w-full mt-6 px-8 py-5 border border-art-ink/10 text-[10px] uppercase font-bold tracking-widest hover:bg-art-ink hover:text-white transition-all flex items-center justify-center gap-2">osmanrafaat05@gmail.com</a>
             </div>
         </footer>
     </div>
@@ -290,6 +325,7 @@
             <div class="lg:w-2/5 p-12 md:p-20 flex flex-col" :class="lang === 'ar' ? 'text-right' : ''">
                 <div class="flex-1">
                     <h3 class="text-4xl md:text-6xl serif-italic mb-4" x-text="selectedArt?.title"></h3>
+                    <p class="text-[10px] uppercase font-black tracking-[0.3em] text-art-accent mb-8" x-text="t('modal-status')"></p>
                     <div x-show="selectedArt?.description" class="p-6 bg-art-ink/5 italic serif-italic text-lg mb-12 border-l-4 border-art-accent">
                         <p x-text="selectedArt?.description"></p>
                     </div>
@@ -340,7 +376,13 @@
                 'section-commission': 'Commission a Piece', 'commission-desc': 'Whether a landscape, a heritage-inspired piece, or a specific size to fit your space—I welcome custom inquiries that resonate with the spirit of the Nile.',
                 'form-name': 'Full Name', 'form-email': 'Email Address', 'form-vision': 'Your Vision', 'form-subject': 'Subject', 'form-submit': '✉ Send via Email', 'send-whatsapp': 'Send via WhatsApp', 'buy-saatchi': 'Buy the Original on Saatchi Art', 'visit-store': 'Saatchi Art Store',
                 'footer-copy': '© 2026 Osman Rafaat · All Rights Reserved', 'label-dims': 'Dimensions', 'label-medium': 'Medium', 'label-year': 'Year', 'label-price': 'Price',
-                'label-message': 'Your Message / Question', 'message-placeholder': 'Is this piece still available? I would like to know more about its history...'
+                'label-message': 'Your Message / Question', 'message-placeholder': 'Is this piece still available? I would like to know more about its history...',
+                'gallery-eyebrow': 'The Portfolio', 'label-available': 'Available',
+                'collect-eyebrow': 'Owning an Original', 'collect-title': 'How to collect a piece',
+                'collect-1-title': 'Choose your piece', 'collect-1-text': 'Browse the gallery and open any work to see its full story, dimensions and price.',
+                'collect-2-title': 'Reserve or buy', 'collect-2-text': 'Message the artist directly on WhatsApp, or buy securely through the Saatchi Art store.',
+                'collect-3-title': 'Delivered to you', 'collect-3-text': 'Every original is one of a kind. Framing and delivery are arranged personally with the artist.',
+                'commission-eyebrow': 'Custom Work', 'modal-status': 'Available · Original, one of a kind'
             },
             ar: {
                 'nav-gallery': 'المعرض', 'nav-commission': 'طلب خاص', 'nav-about': 'عن الفنان', 'nav-contact': 'تواصل', 'nav-shop': 'المتجر',
@@ -356,7 +398,13 @@
                 'section-commission': 'اطلب عملك الخاص', 'commission-desc': 'سواء كان منظراً طبيعياً، أو عملاً مستوحى من التراث، أو مقاساً خاصاً ليناسب مساحتك—أرحب بالطلبات المخصصة التي تحاكي روح النيل.',
                 'form-name': 'الاسم بالكامل', 'form-email': 'البريد الإلكتروني', 'form-vision': 'رؤيتك للعمل', 'form-subject': 'الموضوع', 'form-submit': '✉ إرسال عبر البريد', 'send-whatsapp': 'إرسال عبر واتساب', 'buy-saatchi': 'اقتنِ اللوحة الأصلية على ساتشي آرت', 'visit-store': 'متجر ساتشي آرت',
                 'footer-copy': '© 2026 عثمان رأفت · جميع الحقوق محفوظة', 'label-dims': 'الأبعاد', 'label-medium': 'الخامة', 'label-year': 'السنة', 'label-price': 'السعر',
-                'label-message': 'رسالتك / استفسارك', 'message-placeholder': 'هل هذه اللوحة لا تزال متاحة؟ أود معرفة المزيد عن تاريخها...'
+                'label-message': 'رسالتك / استفسارك', 'message-placeholder': 'هل هذه اللوحة لا تزال متاحة؟ أود معرفة المزيد عن تاريخها...',
+                'gallery-eyebrow': 'الأعمال', 'label-available': 'متاحة',
+                'collect-eyebrow': 'اقتناء لوحة أصلية', 'collect-title': 'إزاي تقتني لوحة',
+                'collect-1-title': 'اختار لوحتك', 'collect-1-text': 'تصفح المعرض وافتح أي لوحة عشان تشوف حكايتها كاملة وأبعادها وسعرها.',
+                'collect-2-title': 'احجز أو اشترِ', 'collect-2-text': 'كلم الفنان مباشرة على واتساب، أو اشترِ بأمان من خلال متجر ساتشي آرت.',
+                'collect-3-title': 'توصل لحد عندك', 'collect-3-text': 'كل لوحة أصلية لا تتكرر، والإطار والتوصيل بيتم الاتفاق عليهم مع الفنان شخصيًا.',
+                'commission-eyebrow': 'أعمال حسب الطلب', 'modal-status': 'متاحة · أصلية لا تتكرر'
             }
         };
 
