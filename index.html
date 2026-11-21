@@ -181,7 +181,7 @@
                     <template x-for="(art, idx) in galleryArtworks" :key="idx">
                         <div @click="openArt(art)" class="group cursor-pointer fade-in" :style="`animation-delay: ${idx * 100}ms`">
                             <div class="aspect-[4/5] bg-neutral-200 overflow-hidden relative shadow-2xl artwork-image-container">
-                                <img :src="art.image" :alt="art.title" class="w-full h-full object-cover">
+                                <img :src="art.image" :alt="art.title" class="w-full h-full object-contain p-3">
                                 <div class="absolute inset-0 bg-art-ink/10 opacity-0 group-hover:opacity-100 transition-all duration-700 flex items-center justify-center">
                                     <span class="px-8 py-3 bg-white/10 backdrop-blur-md text-white text-[10px] uppercase font-bold tracking-[0.3em] border border-white/20" x-text="t('view-piece')"></span>
                                 </div>
@@ -193,7 +193,7 @@
                                     <p x-show="art.dimensions" class="text-[10px] uppercase font-bold text-art-ink/40 tracking-[0.2em] mt-2" x-text="art.dimensions"></p>
                                 </div>
                                 <div class="shrink-0" :class="lang === 'ar' ? 'text-left' : 'text-right'">
-                                    <p x-show="art.price" class="text-sm font-medium" x-text="art.price"></p>
+                                    <p x-show="art.price && art.status !== 'collected'" class="text-sm font-medium" x-text="art.price"></p>
                                     <p x-show="art.status === 'available'" class="text-[9px] uppercase font-black tracking-[0.2em] text-art-accent mt-1" x-text="t('label-available')"></p>
                                     <p x-show="art.status === 'collected'" class="text-[9px] uppercase font-black tracking-[0.2em] text-art-ink/35 mt-1" x-text="t('label-collected')"></p>
                                 </div>
@@ -242,17 +242,10 @@
                     <div class="space-y-8 font-light text-lg md:text-xl leading-relaxed text-white/70">
                         <p x-text="t('about-p1')"></p>
                         <p x-text="t('about-p2')"></p>
-                        <p x-text="t('about-p3')"></p>
-                        
-                        <div class="pt-8">
-                            <p class="serif-italic italic text-3xl text-white inline-block border-l-2 border-art-accent pl-8" 
-                               :class="lang === 'ar' ? 'border-l-0 border-r-2 pr-8 pl-0 text-right' : 'text-left'"
-                               x-text="t('about-quote')"></p>
-                        </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-16 text-center">
                             <figure>
-                                <img src="art/about-process.jpg" alt="Osman Rafaat drawing in his studio" class="w-full h-auto shadow-2xl">
+                                <img src="art/about-process.svg" alt="Osman Rafaat drawing in his studio" class="w-full h-auto shadow-2xl">
                                 <figcaption class="text-[10px] uppercase font-bold tracking-[0.25em] text-white/40 mt-4" x-text="t('about-photo-process')"></figcaption>
                             </figure>
                             <figure>
@@ -346,7 +339,7 @@
                             <span class="opacity-40" x-text="t('label-dims')"></span>
                             <span x-text="selectedArt?.dimensions"></span>
                         </div>
-                        <div class="flex justify-between border-b border-art-ink/5 pb-4" x-show="selectedArt?.price">
+                        <div class="flex justify-between border-b border-art-ink/5 pb-4" x-show="selectedArt?.price && selectedArt?.status !== 'collected'">
                             <span class="opacity-40" x-text="t('label-price')"></span>
                             <span x-text="selectedArt?.price"></span>
                         </div>
@@ -376,64 +369,63 @@
         const TRANSLATIONS = {
             en: {
                 'nav-gallery': 'Gallery', 'nav-commission': 'Commission', 'nav-about': 'About', 'nav-contact': 'Contact', 'nav-shop': 'Shop',
-                'hero-tagline': "Earth's Truth, Color's Freedom", 'artist-name': 'Osman Rafaat', 'artist-subtitle': 'Visual Artist · Minya, Egypt',
-                'hero-quote': "Earth's Truth, Color's Freedom", 'hero-featured-caption': 'Featured Work · Another World',
-                'section-gallery': 'Selected Works', 'loading': 'Loading atmosphere...',
-                'coming-soon': 'New works coming soon.', 'view-piece': 'View Piece', 'artist-statement': 'Artist Statement',
-                'about-title': 'The Nile runs past my window.',
-                'about-p1': 'I grew up in a village in Minya, Upper Egypt — where the river is not a metaphor, it is a neighbor. Where ancient walls speak in three languages at once: Pharaonic, Islamic, Coptic.',
-                'about-p2': 'I studied at the Faculty of Specific Education, Fine Arts Department, Assiut University, but I have always painted from instinct before theory. I am drawn to heritage — not as nostalgia, but as a living thing. Something still breathing in the mud-brick walls, in the geometry of a minaret, in the face of a farmer at dusk.',
-                'about-p3': 'My style is not yet complete — and that is precisely what makes every painting different from the one before it.',
-                'about-quote': 'Everything I paint begins here.',
-                'section-commission': 'Commission a Piece', 'commission-desc': 'Whether a landscape, a heritage-inspired piece, or a specific size to fit your space—I welcome custom inquiries that resonate with the spirit of the Nile.',
-                'form-name': 'Full Name', 'form-email': 'Email Address', 'form-vision': 'Your Vision', 'form-subject': 'Subject', 'form-submit': '✉ Send via Email', 'send-whatsapp': 'Send via WhatsApp', 'buy-saatchi': 'Buy the Original on Saatchi Art', 'visit-store': 'Saatchi Art Store',
+                'hero-tagline': "Paintings & drawings", 'artist-name': 'Osman Rafaat', 'artist-subtitle': 'Visual Artist · Minya, Egypt',
+                'hero-quote': "Paintings & drawings", 'hero-featured-caption': 'Featured Work · Another World',
+                'section-gallery': 'Selected Works', 'loading': "Loading works...",
+                'coming-soon': 'New works coming soon.', 'view-piece': 'View Piece', 'artist-statement': "About the artist",
+                'about-title': "Osman Rafaat",
+                'about-p1': "I am a visual artist from Minya, Egypt.",
+                'about-p2': "I make paintings and drawings. I am at the start of my journey and still developing my work.",
+                'about-p3': "",
+                'about-quote': "",
+                'section-commission': 'Commission a Piece', 'commission-desc': "Have a painting in mind? Tell me the subject and size.",
+                'form-name': 'Full Name', 'form-email': 'Email Address', 'form-vision': "Your idea", 'form-subject': 'Subject', 'form-submit': '✉ Send via Email', 'send-whatsapp': 'Send via WhatsApp', 'buy-saatchi': "View Saatchi Art profile", 'visit-store': 'Saatchi Art Store',
                 'footer-copy': '© 2026 Osman Rafaat · All Rights Reserved', 'label-dims': 'Dimensions', 'label-medium': 'Medium', 'label-year': 'Year', 'label-price': 'Price',
-                'label-message': 'Your Message / Question', 'message-placeholder': 'Is this piece still available? I would like to know more about its history...',
+                'label-message': 'Your Message / Question', 'message-placeholder': "I would like to ask about this work.",
                 'gallery-eyebrow': 'The Portfolio', 'label-available': 'Available',
-                'collect-eyebrow': 'Owning an Original', 'collect-title': 'How to collect a piece',
-                'collect-1-title': 'Choose your piece', 'collect-1-text': 'Browse the gallery and open any work to see its full story, dimensions and price.',
-                'collect-2-title': 'Reserve or buy', 'collect-2-text': 'Message the artist directly on WhatsApp, or buy securely through the Saatchi Art store.',
-                'collect-3-title': 'Delivered to you', 'collect-3-text': 'Every original is one of a kind. Framing and delivery are arranged personally with the artist.',
-                'commission-eyebrow': 'Custom Work', 'modal-status': 'Available · Original, one of a kind', 'modal-status-collected': 'Collected · In a private collection', 'label-collected': 'Collected', 'about-photo-process': 'In the studio', 'about-photo-exhibition': 'At an exhibition opening'
+                'collect-eyebrow': "Collecting", 'collect-title': "Interested in a work?",
+                'collect-1-title': "Choose a work", 'collect-1-text': "Open a work to see its details.",
+                'collect-2-title': "Ask me", 'collect-2-text': "Message me on WhatsApp about availability and price.",
+                'collect-3-title': "Arrange delivery", 'collect-3-text': "We agree on framing and delivery before you buy.",
+                'commission-eyebrow': 'Custom Work', 'modal-status': "Available", 'modal-status-collected': "Collected", 'label-collected': 'Collected', 'about-photo-process': 'In the studio', 'about-photo-exhibition': 'At an exhibition opening'
             },
             ar: {
                 'nav-gallery': 'المعرض', 'nav-commission': 'طلب خاص', 'nav-about': 'عن الفنان', 'nav-contact': 'تواصل', 'nav-shop': 'المتجر',
-                'hero-tagline': "صدق الأرض، حرية الألوان", 'artist-name': 'عثمان رأفت', 'artist-subtitle': 'فنان تشكيلي · المنيا، صعيد مصر',
-                'hero-quote': "صدق الأرض، حرية الألوان", 'hero-featured-caption': 'عمل مختار · عالم آخر',
-                'section-gallery': 'أعمال مختارة', 'loading': 'جاري تحميل الأعمال...',
-                'coming-soon': 'أعمال جديدة قريباً.', 'view-piece': 'عرض اللوحة', 'artist-statement': 'رؤية فنية',
-                'about-title': 'النيل يجري أمام نافذتي.',
-                'about-p1': 'نشأت في قرية في المنيا، صعيد مصر — حيث النهر ليس استعارة، بل جار. حيث الجدران القديمة تتحدث بثلاث لغات في آن واحد: فرعونية، إسلامية، قبطية.',
-                'about-p2': 'درست في كلية التربية النوعية، قسم التربية الفنية، جامعة أسيوط، لكنني دائمًا ما أرسم بالفطرة قبل النظرية. تنجذب روحي للتراث — ليس كحنين، ولكن كشيء حي. شيء لا يزال ينبض بين جدران الطوب اللبن، وفي هندسة المآذن، وفي وجه فلاح وقت الغسق.',
-                'about-p3': 'أسلوبي لم يكتمل بعد — وهذا بالضبط ما يجعل كل لوحة مختلفة عن سابقتها.',
-                'about-quote': 'كل ما أرسمه يبدأ من هنا.',
-                'section-commission': 'اطلب عملك الخاص', 'commission-desc': 'سواء كان منظراً طبيعياً، أو عملاً مستوحى من التراث، أو مقاساً خاصاً ليناسب مساحتك—أرحب بالطلبات المخصصة التي تحاكي روح النيل.',
-                'form-name': 'الاسم بالكامل', 'form-email': 'البريد الإلكتروني', 'form-vision': 'رؤيتك للعمل', 'form-subject': 'الموضوع', 'form-submit': '✉ إرسال عبر البريد', 'send-whatsapp': 'إرسال عبر واتساب', 'buy-saatchi': 'اقتنِ اللوحة الأصلية على ساتشي آرت', 'visit-store': 'متجر ساتشي آرت',
+                'hero-tagline': "لوحات ورسومات", 'artist-name': 'عثمان رأفت', 'artist-subtitle': 'فنان تشكيلي · المنيا، صعيد مصر',
+                'hero-quote': "لوحات ورسومات", 'hero-featured-caption': 'عمل مختار · عالم آخر',
+                'section-gallery': 'أعمال مختارة', 'loading': "جاري تحميل الأعمال...",
+                'coming-soon': 'أعمال جديدة قريباً.', 'view-piece': 'عرض اللوحة', 'artist-statement': "عن الفنان",
+                'about-title': "عثمان رأفت",
+                'about-p1': "أنا عثمان رأفت، فنان تشكيلي من المنيا.",
+                'about-p2': "بقدم لوحات ورسومات. لسه في بداية رحلتي وبطور شغلي.",
+                'about-p3': "",
+                'about-quote': "",
+                'section-commission': 'اطلب عملك الخاص', 'commission-desc': "عندك فكرة للوحة؟ ابعتلي الموضوع والمقاس.",
+                'form-name': 'الاسم بالكامل', 'form-email': 'البريد الإلكتروني', 'form-vision': "فكرتك", 'form-subject': 'الموضوع', 'form-submit': '✉ إرسال عبر البريد', 'send-whatsapp': 'إرسال عبر واتساب', 'buy-saatchi': "صفحتي على ساتشي آرت", 'visit-store': 'متجر ساتشي آرت',
                 'footer-copy': '© 2026 عثمان رأفت · جميع الحقوق محفوظة', 'label-dims': 'الأبعاد', 'label-medium': 'الخامة', 'label-year': 'السنة', 'label-price': 'السعر',
-                'label-message': 'رسالتك / استفسارك', 'message-placeholder': 'هل هذه اللوحة لا تزال متاحة؟ أود معرفة المزيد عن تاريخها...',
+                'label-message': 'رسالتك / استفسارك', 'message-placeholder': "حابب أسأل عن العمل ده.",
                 'gallery-eyebrow': 'الأعمال', 'label-available': 'متاحة',
-                'collect-eyebrow': 'اقتناء لوحة أصلية', 'collect-title': 'إزاي تقتني لوحة',
-                'collect-1-title': 'اختار لوحتك', 'collect-1-text': 'تصفح المعرض وافتح أي لوحة عشان تشوف حكايتها كاملة وأبعادها وسعرها.',
-                'collect-2-title': 'احجز أو اشترِ', 'collect-2-text': 'كلم الفنان مباشرة على واتساب، أو اشترِ بأمان من خلال متجر ساتشي آرت.',
-                'collect-3-title': 'توصل لحد عندك', 'collect-3-text': 'كل لوحة أصلية لا تتكرر، والإطار والتوصيل بيتم الاتفاق عليهم مع الفنان شخصيًا.',
-                'commission-eyebrow': 'أعمال حسب الطلب', 'modal-status': 'متاحة · أصلية لا تتكرر', 'modal-status-collected': 'مُقتناة · في مجموعة خاصة', 'label-collected': 'مُقتناة', 'about-photo-process': 'في الاستوديو', 'about-photo-exhibition': 'في افتتاح معرض'
+                'collect-eyebrow': "اقتناء الأعمال", 'collect-title': "مهتم بلوحة؟",
+                'collect-1-title': "اختار العمل", 'collect-1-text': "افتح العمل عشان تشوف تفاصيله.",
+                'collect-2-title': "كلمني", 'collect-2-text': "ابعتلي على واتساب واسأل عن التوفر والسعر.",
+                'collect-3-title': "نتفق على التوصيل", 'collect-3-text': "بنتفق على الإطار والتوصيل قبل الشراء.",
+                'commission-eyebrow': 'أعمال حسب الطلب', 'modal-status': "متاحة", 'modal-status-collected': "مُقتناة", 'label-collected': 'مُقتناة', 'about-photo-process': 'في الاستوديو', 'about-photo-exhibition': 'في افتتاح معرض'
             }
         };
 
         const FALLBACK_ARTWORKS = [
-            { id: '1', title: 'Another World', year: '2026', medium: 'Acrylic on linen fabric', price: '17000 EGP', dimensions: '120 × 200 cm', image: 'art/24-another-world.jpg', description: 'Original one-of-a-kind artwork · Natural wood frame, color upon request · Free delivery handled personally by the artist', status: 'available', type: '' },
-            { id: '3', title: 'Birds Symphony', year: '2026', medium: 'Mix Media Acrylic and Embroidery', price: '16500 EGP', dimensions: '100 × 100 cm', image: 'art/32-birds-symphony.jpg', description: 'An artwork that combines acrylic painting with meticulous hand-embroidered birds on fabric.', status: 'collected', type: '' },
-            { id: '4', title: 'The Peacock', year: '2026', medium: 'Acrylic on linen fabric', price: '15000 EGP', dimensions: '100 × 100 cm', image: 'art/the-peacock.jpg', description: 'A peacock painted in acrylic on natural linen fabric. Original one-of-a-kind artwork.', status: 'collected', type: '' },
-            { id: '5', title: 'El Falooka', year: '2026', medium: 'Acrylic on linen fabric', price: '30000 EGP', dimensions: '100 × 100 cm', image: 'art/33-el-falooka.jpg', description: 'A piece of the Nile, inspired by the place I call home.', status: 'available', type: '' },
-            { id: '6', title: 'Leonardo', year: '2026', medium: 'Faber-Castell colored pencils on 500gsm paper', price: '', dimensions: '25 × 30 cm', image: 'art/31-untitled-1.jpg', description: 'A personal reimagining of a Leonardo da Vinci portrait.', status: 'available', type: '' },
-            { id: '7', title: 'Untitled', year: '', medium: '', price: '', dimensions: '', image: 'art/30-untitled-2.jpg', description: '', status: '', type: '' },
-            { id: '8', title: 'Untitled', year: '', medium: '', price: '', dimensions: '', image: 'art/29-untitled-3.jpg', description: '', status: '', type: '' },
-            { id: '9', title: 'Untitled', year: '', medium: '', price: '', dimensions: '', image: 'art/27-untitled-4.jpg', description: '', status: '', type: '' },
-            { id: '10', title: 'Untitled', year: '', medium: '', price: '', dimensions: '', image: 'art/25-untitled-5.jpg', description: '', status: '', type: '' },
-            { id: '11', title: 'Untitled', year: '', medium: '', price: '', dimensions: '', image: 'art/22-untitled-6.jpg', description: '', status: '', type: '' },
-            { id: '12', title: 'Untitled', year: '', medium: '', price: '', dimensions: '', image: 'art/26-untitled-7.jpg', description: '', status: '', type: '' },
-            { id: '13', title: 'Untitled', year: '', medium: '', price: '', dimensions: '', image: 'art/untitled-8.jpg', description: '', status: '', type: '' },
-            { id: '14', title: 'Untitled', year: '', medium: '', price: '', dimensions: '', image: 'art/34-untitled-9.jpg', description: '', status: '', type: '' }
+            { id: '1', title: 'Another World', year: '2026', medium: 'Acrylic on linen fabric', price: '17000 EGP', dimensions: '120 × 200 cm', image: 'art/24-another-world.jpg', description: "Birds and plants in acrylic on linen.", status: 'available', type: '' },
+            { id: '3', title: 'Birds Symphony', year: '2026', medium: 'Mix Media Acrylic and Embroidery', price: '16500 EGP', dimensions: '100 × 100 cm', image: 'art/32-birds-symphony.jpg', description: "Acrylic painting with hand embroidery.", status: 'collected', type: '' },
+            { id: '4', title: 'The Peacock', year: '2026', medium: 'Acrylic on linen fabric', price: '15000 EGP', dimensions: '100 × 100 cm', image: 'art/the-peacock.svg', description: "Peacocks in acrylic on linen.", status: 'collected', type: '' },
+            { id: '5', title: 'El Falooka', year: '2026', medium: 'Acrylic on linen fabric', price: '30000 EGP', dimensions: '100 × 100 cm', image: 'art/33-el-falooka.jpg', description: "Inspired by the Nile.", status: 'available', type: '' },
+            { id: '6', title: 'Leonardo portrait study', year: '', medium: 'Faber-Castell on 500gsm paper', price: '', dimensions: '30 × 25 cm', image: 'art/31-untitled-1.jpg', description: "A personal study of a Leonardo da Vinci portrait.", status: 'available', type: '' },
+            { id: '7', title: 'Artwork (details pending)', year: '', medium: '', price: '', dimensions: '', image: 'art/30-untitled-2.jpg', description: '', status: '', type: '' },
+            { id: '8', title: 'Artwork (details pending)', year: '', medium: '', price: '', dimensions: '', image: 'art/29-untitled-3.jpg', description: '', status: '', type: '' },
+            { id: '9', title: 'Artwork (details pending)', year: '', medium: '', price: '', dimensions: '', image: 'art/27-untitled-4.jpg', description: '', status: '', type: '' },
+            { id: '10', title: 'Artwork (details pending)', year: '', medium: '', price: '', dimensions: '', image: 'art/25-untitled-5.jpg', description: '', status: '', type: '' },
+            { id: '12', title: 'Artwork (details pending)', year: '', medium: '', price: '', dimensions: '', image: 'art/26-untitled-7.jpg', description: '', status: '', type: '' },
+            { id: '13', title: 'Artwork (details pending)', year: '', medium: '', price: '', dimensions: '', image: 'art/untitled-8.svg', description: '', status: '', type: '' },
+            { id: '14', title: 'Artwork (details pending)', year: '', medium: '', price: '', dimensions: '', image: 'art/34-untitled-9.jpg', description: '', status: '', type: '' }
         ];
 
         function osmanArt() {
