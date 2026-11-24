@@ -184,7 +184,9 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-32" x-show="!loading">
                     <template x-for="(art, idx) in galleryArtworks" :key="idx">
-                        <div @click="openArt(art)" class="group cursor-pointer fade-in" :style="`animation-delay: ${idx * 100}ms`">
+                        <div class="contents">
+                        <h3 x-show="groupLabel(idx)" x-text="groupLabel(idx)" class="col-span-full text-3xl md:text-5xl serif-italic pt-8 border-t border-art-ink/10"></h3>
+<div @click="openArt(art)" class="group cursor-pointer fade-in" :style="`animation-delay: ${idx * 100}ms`">
                             <div class="aspect-[4/5] bg-neutral-200 overflow-hidden relative shadow-2xl artwork-image-container">
                                 <img :src="art.image" :alt="art.title" class="w-full h-full object-contain p-3">
                                 <div class="absolute inset-0 bg-art-ink/10 opacity-0 group-hover:opacity-100 transition-all duration-700 flex items-center justify-center">
@@ -204,6 +206,7 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
                     </template>
                 </div>
             </div>
@@ -257,6 +260,12 @@
                                 <img src="art/23-about-exhibition.jpg" alt="Osman Rafaat at an exhibition opening" class="w-full h-auto shadow-2xl">
                                 <figcaption class="text-[10px] uppercase font-bold tracking-[0.25em] text-white/40 mt-4" x-text="t('about-photo-exhibition')"></figcaption>
                             </figure>
+                            <template x-for="(a, i) in aboutArtworks" :key="'ab'+i">
+                                <figure class="md:col-span-2">
+                                    <img :src="a.image" :alt="a.title" class="w-full h-auto shadow-2xl">
+                                    <figcaption class="text-[10px] uppercase font-bold tracking-[0.25em] text-white/40 mt-4" x-text="displayTitle(a)"></figcaption>
+                                </figure>
+                            </template>
                         </div>
                     </div>
                 </div>
@@ -448,7 +457,7 @@
         function osmanArt() {
             return {
                 lang: localStorage.getItem('osman_lang') || 'en', view: 'site', loading: true, mobileMenu: false, showModal: false, zoom: false, selectedArt: null, visitorMessage: '', artworks: [],
-                get galleryArtworks() { return this.artworks.filter(art => !art.type || art.type === 'gallery'); },
+                get galleryArtworks() { return this.artworks.filter(art => art.type !== 'about' && art.type !== 'archive'); },
                 get aboutArtworks() { return this.artworks.filter(art => art.type === 'about'); },
                 commForm: { name: '', email: '', subject: '', vision: '' },
                 init() { this.loadArtworks(); setTimeout(() => lucide.createIcons(), 500); },
@@ -457,7 +466,13 @@
                     if (!art) return '';
                     if (this.lang !== 'ar') return art.title;
                     const names = { '1': 'عالم آخر', '3': 'سيمفونية الطيور', '4': 'الطاووس', '5': 'الفلوكة', '6': 'ليوناردو دافنشي', '7': 'جوستاف كوربيه II', '8': 'هنري ماتيس', '9': 'كلود مونيه', '10': 'جوستاف كوربيه I', '12': 'رجل مع غراب' };
-                    return names[art.id] || (art.title === 'Artwork (details pending)' ? 'عمل فني (التفاصيل قريبًا)' : art.title);
+                    return names[art.id] || art.title_ar || (art.title === 'Artwork (details pending)' ? 'عمل فني (التفاصيل قريبًا)' : art.title);
+                },
+                groupLabel(idx) {
+                    const art = this.galleryArtworks[idx], prev = this.galleryArtworks[idx - 1];
+                    if (!art || !art.type || art.type === 'gallery' || (prev && prev.type === art.type)) return '';
+                    const labels = { more: ['More works', 'أعمال أخرى'], drawing: ['Drawings', 'رسومات'], wall: ['Wall work', 'أعمال جدارية'], ceramics: ['Ceramics', 'خزف'] };
+                    const l = labels[art.type]; return l ? l[this.lang === 'ar' ? 1 : 0] : '';
                 },
                 displayMedium(art) {
                     if (!art?.medium) return '';
@@ -535,7 +550,8 @@
                             image: get(result, 'image'),
                             description: get(result, 'description'),
                             status: get(result, 'status').toLowerCase().trim(),
-                            type: get(result, 'type').toLowerCase().trim()
+                            type: get(result, 'type').toLowerCase().trim(),
+                            title_ar: get(result, 'title_ar')
                         };
                         if (art.image === LOGO_URL) return null;
                         return art;
