@@ -168,6 +168,24 @@
             </div>
         </section>
 
+        <!-- STATEMENT + LATEST -->
+        <section id="intro" class="py-14 md:py-24 px-6 md:px-16 lg:px-32 border-y border-art-ink/5 bg-white" x-show="!loading">
+            <div class="max-w-5xl mx-auto text-center">
+                <p class="text-2xl md:text-4xl serif-italic leading-snug mb-4" x-text="t('about-p1')"></p>
+                <p class="text-base md:text-lg font-light opacity-70 max-w-2xl mx-auto" x-text="t('about-p2')"></p>
+            </div>
+            <div class="max-w-6xl mx-auto mt-12" x-show="latestWorks.length">
+                <h2 class="text-[10px] uppercase font-black tracking-[0.4em] text-art-ink/40 mb-6 text-center" x-text="lang === 'ar' ? 'أحدث الأعمال' : 'Latest works'"></h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+                    <template x-for="a in latestWorks" :key="'lt'+a.id">
+                        <a :href="'#work-' + a.id" @click.prevent="openArt(a)" class="block bg-neutral-200 aspect-[4/5] p-2" :aria-label="displayTitle(a)">
+                            <img :src="a.image" :alt="displayTitle(a)" loading="lazy" class="w-full h-full object-contain">
+                        </a>
+                    </template>
+                </div>
+            </div>
+        </section>
+
         <!-- GALLERY SECTION -->
         <section id="gallery" class="py-16 md:py-32 px-6 md:px-16 lg:px-32">
             <div class="max-w-7xl mx-auto">
@@ -196,6 +214,7 @@
                             <div class="mt-8 flex justify-between items-start gap-4">
                                 <div class="max-w-[70%]">
                                     <h3 class="text-2xl serif-italic font-medium leading-none mb-3" x-text="displayTitle(art)"></h3>
+                                    <a x-show="pageUrl(art)" :href="pageUrl(art)" @click.stop class="inline-block text-[9px] uppercase font-black tracking-[0.2em] text-art-accent mb-2 underline" x-text="lang === 'ar' ? 'صفحة العمل' : 'Work page'"></a>
                                     <p x-show="art.medium || art.year" class="text-[10px] uppercase font-black text-art-ink/30 tracking-[0.2em]" x-text="[displayMedium(art), art.year].filter(Boolean).join(' · ')"></p>
                                     <p x-show="art.dimensions" class="text-[10px] uppercase font-bold text-art-ink/40 tracking-[0.2em] mt-2" x-text="displayDimensions(art)"></p>
                                 </div>
@@ -458,6 +477,9 @@
             return {
                 lang: localStorage.getItem('osman_lang') || 'en', view: 'site', loading: true, mobileMenu: false, showModal: false, zoom: false, selectedArt: null, visitorMessage: '', artworks: [],
                 get galleryArtworks() { return this.artworks.filter(art => art.type !== 'about' && art.type !== 'archive'); },
+                get latestWorks() { return this.galleryArtworks.filter(a => a.type && a.type !== 'gallery').slice(-4).reverse(); },
+                pages: {},
+                pageUrl(a) { const p = this.pages[a.id]; return p ? p : ''; },
                 get aboutArtworks() { return this.artworks.filter(art => art.type === 'about'); },
                 commForm: { name: '', email: '', subject: '', vision: '' },
                 init() { this.loadArtworks(); setTimeout(() => lucide.createIcons(), 500); },
@@ -493,6 +515,7 @@
                     this.loading = true;
                     try {
                         const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSiChHx_Y9xUhLWb42AXOVrqUMVSUa-G01laFnTo3IZgE2HLPnUSmpHiZhBy79rluBUyYvshSuCDreI/pub?output=csv';
+                        try { const pr = await fetch('works.json'); if (pr.ok) { (await pr.json()).forEach(w => { this.pages[w.id] = 'work/' + w.slug + '/'; }); } } catch (e) {}
                         const response = await fetch(SHEET_URL);
                         const text = await response.text();
                         this.artworks = this.parseCSV(text); const m = location.hash.match(/^#work-(\d+)$/); if (m) { const a = this.artworks.find(x => x.id === m[1]); if (a) setTimeout(() => this.openArt(a), 0); }
