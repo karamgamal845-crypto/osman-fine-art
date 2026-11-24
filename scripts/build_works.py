@@ -125,7 +125,19 @@ dt{{opacity:.5;font-weight:700}}dd{{margin:0;font-weight:600}}
 <div class="nav"><a href="../../{prev}">&larr; Previous</a><a href="../../{next}">Next &rarr;</a></div></div></main>
 </body></html>"""
 
+def build_cover():
+    import base64
+    src = os.path.join(ROOT, "assets", "cover.b64")
+    if not os.path.exists(src): return
+    raw = base64.b64decode(open(src).read())
+    os.makedirs(ORIG, exist_ok=True); os.makedirs(IMG, exist_ok=True)
+    open(os.path.join(ORIG, "cover-original.jpg"), "wb").write(raw)  # exact bytes as sent
+    im = Image.open(os.path.join(ORIG, "cover-original.jpg")).convert("RGB")
+    im.save(os.path.join(IMG, "cover.webp"), "WEBP", quality=90, method=6)  # same pixels, no crop
+    im.save(os.path.join(IMG, "cover.jpg"), "JPEG", quality=92)
+
 def main():
+    build_cover()
     rows = read_rows(); seen = []
     for r in rows:
         try:
