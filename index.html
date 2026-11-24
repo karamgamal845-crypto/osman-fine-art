@@ -100,9 +100,11 @@
             background: #8b7355;
         }
         [dir="rtl"] .hero-eyebrow-line::before{ order: 2; }
+            a:focus-visible, button:focus-visible { outline: 2px solid #8b7355; outline-offset: 3px; }
     </style>
 </head>
 <body class="antialiased">
+    <a href="#gallery" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[300] focus:bg-white focus:px-4 focus:py-2">Skip to works</a>
 
     <!-- NAVIGATION -->
     <nav class="fixed top-0 left-0 w-full h-24 z-50 flex items-center justify-between px-6 md:px-16 bg-art-bg/90 backdrop-blur-sm border-b border-art-ink/5">
@@ -179,7 +181,7 @@
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
                     <template x-for="a in latestWorks" :key="'lt'+a.id">
                         <a :href="'#work-' + a.id" @click.prevent="openArt(a)" class="block bg-neutral-200 aspect-[4/5] p-2" :aria-label="displayTitle(a)">
-                            <img :src="a.image" :alt="displayTitle(a)" loading="lazy" class="w-full h-full object-contain">
+                            <img :src="thumb(a)" :alt="displayTitle(a)" loading="lazy" decoding="async" class="w-full h-full object-contain">
                         </a>
                     </template>
                 </div>
@@ -206,7 +208,7 @@
                         <h3 x-show="groupLabel(idx)" x-text="groupLabel(idx)" class="col-span-full text-3xl md:text-5xl serif-italic pt-6 md:pt-8 border-t border-art-ink/10 mt-4 md:mt-0"></h3>
 <div @click="openArt(art)" class="group cursor-pointer fade-in" :style="`animation-delay: ${Math.min(idx, 4) * 80}ms`">
                             <div class="aspect-[4/5] bg-neutral-200 overflow-hidden relative shadow-2xl artwork-image-container">
-                                <img :src="art.image" :alt="art.title" class="w-full h-full object-contain p-3">
+                                <img :src="thumb(art)" :alt="displayTitle(art)" loading="lazy" decoding="async" class="w-full h-full object-contain p-3">
                                 <div class="absolute inset-0 bg-art-ink/10 opacity-0 group-hover:opacity-100 transition-all duration-700 flex items-center justify-center">
                                     <span class="px-8 py-3 bg-white/10 backdrop-blur-md text-white text-[10px] uppercase font-bold tracking-[0.3em] border border-white/20" x-text="t('view-piece')"></span>
                                 </div>
@@ -269,6 +271,8 @@
                     <div class="space-y-8 font-light text-lg md:text-xl leading-relaxed text-white/70">
                         <p x-text="t('about-p1')"></p>
                         <p x-text="t('about-p2')"></p>
+                        <p x-text="t('about-p3')"></p>
+                        <p x-text="t('about-p4')"></p>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-16 text-center">
                             <figure>
@@ -281,7 +285,7 @@
                             </figure>
                             <template x-for="(a, i) in aboutArtworks" :key="'ab'+i">
                                 <figure class="md:col-span-2">
-                                    <img :src="a.image" :alt="a.title" class="w-full h-auto shadow-2xl">
+                                    <img :src="a.image" :alt="displayTitle(a)" loading="lazy" class="w-full h-auto shadow-2xl">
                                     <figcaption class="text-[10px] uppercase font-bold tracking-[0.25em] text-white/40 mt-4" x-text="displayTitle(a)"></figcaption>
                                 </figure>
                             </template>
@@ -420,6 +424,8 @@
                 'about-title': "Osman Rafaat",
                 'about-p1': "I am a visual artist from Minya, Egypt.",
                 'about-p2': "I make paintings and drawings. I am at the start of my journey and still developing my work.",
+                'about-p3': "I studied art education at the Faculty of Specific Education, Assiut University, and graduated in 2020 with a grade of Very Good with honors. I am now studying for a master's degree in art education at Helwan University.",
+                'about-p4': "Besides painting and portraits, I work in murals, ceramics, carpentry and art installation.",
                 'about-p3': "",
                 'about-quote': "",
                 'section-commission': 'Commission a Piece', 'commission-desc': "Have a painting in mind? Tell me the subject and size.",
@@ -442,6 +448,8 @@
                 'about-title': "عثمان رأفت",
                 'about-p1': "أنا عثمان رأفت، فنان تشكيلي من المنيا.",
                 'about-p2': "بقدم لوحات ورسومات. لسه في بداية رحلتي وبطور شغلي.",
+                'about-p3': "درست التربية الفنية في كلية التربية النوعية بجامعة أسيوط، وتخرجت سنة 2020 بتقدير جيد جدًا مع مرتبة الشرف. وحاليًا بدرس الماجستير في التربية الفنية بجامعة حلوان.",
+                'about-p4': "غير الرسم والبورتريه، بشتغل في الجداريات والخزف والنجارة وأعمال التركيب الفني.",
                 'about-p3': "",
                 'about-quote': "",
                 'section-commission': 'اطلب عملك الخاص', 'commission-desc': "عندك فكرة للوحة؟ ابعتلي الموضوع والمقاس.",
@@ -478,7 +486,8 @@
                 lang: localStorage.getItem('osman_lang') || 'en', view: 'site', loading: true, mobileMenu: false, showModal: false, zoom: false, selectedArt: null, visitorMessage: '', artworks: [],
                 get galleryArtworks() { return this.artworks.filter(art => art.type !== 'about' && art.type !== 'archive'); },
                 get latestWorks() { return this.galleryArtworks.filter(a => a.type && a.type !== 'gallery').slice(-4).reverse(); },
-                pages: {},
+                pages: {}, thumbs: {},
+                thumb(a) { return this.thumbs[a.id] || a.image; },
                 pageUrl(a) { const p = this.pages[a.id]; return p ? p : ''; },
                 get aboutArtworks() { return this.artworks.filter(art => art.type === 'about'); },
                 commForm: { name: '', email: '', subject: '', vision: '' },
@@ -515,7 +524,7 @@
                     this.loading = true;
                     try {
                         const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSiChHx_Y9xUhLWb42AXOVrqUMVSUa-G01laFnTo3IZgE2HLPnUSmpHiZhBy79rluBUyYvshSuCDreI/pub?output=csv';
-                        try { const pr = await fetch('works.json'); if (pr.ok) { (await pr.json()).forEach(w => { this.pages[w.id] = 'work/' + w.slug + '/'; }); } } catch (e) {}
+                        try { const pr = await fetch('works.json'); if (pr.ok) { (await pr.json()).forEach(w => { this.pages[w.id] = 'work/' + w.slug + '/'; this.thumbs[w.id] = w.thumb; }); } } catch (e) {}
                         const response = await fetch(SHEET_URL);
                         const text = await response.text();
                         this.artworks = this.parseCSV(text); const m = location.hash.match(/^#work-(\d+)$/); if (m) { const a = this.artworks.find(x => x.id === m[1]); if (a) setTimeout(() => this.openArt(a), 0); }
