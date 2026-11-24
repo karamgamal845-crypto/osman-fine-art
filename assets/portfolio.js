@@ -2,6 +2,11 @@
             return {
                 lang: localStorage.getItem('osman_lang') || 'en', view: 'site', loading: true, mobileMenu: false, showModal: false, zoom: false, selectedArt: null, visitorMessage: '', artworks: [],
                 get galleryArtworks() { return this.artworks.filter(art => art.type !== 'about' && art.type !== 'archive'); },
+                filterType: 'all',
+                get categories() { return [...new Set(this.galleryArtworks.map(a => a.type || 'gallery'))]; },
+                get visibleArtworks() { return this.filterType === 'all' ? this.galleryArtworks : this.galleryArtworks.filter(a => (a.type || 'gallery') === this.filterType); },
+                categoryName(k) { const n={all:['All works','كل الأعمال'],gallery:['Paintings','لوحات'],more:['More works','أعمال أخرى'],drawing:['Drawings','رسومات'],wall:['Wall work','أعمال جدارية'],ceramics:['Ceramics','خزف']}; return (n[k]||[k,k])[this.lang==='ar'?1:0]; },
+                get featuredWorks() { return this.galleryArtworks.filter(a=>a.featured); },
                 get latestWorks() { return this.galleryArtworks.filter(a => a.type && a.type !== 'gallery').slice(-4).reverse(); },
                 pages: {}, thumbs: {}, fulls: {}, sizes: {},
                 imageSize(a) { return this.sizes[a?.id] || {w:600,h:800}; },
@@ -20,7 +25,7 @@
                     return names[art.id] || art.title_ar || (art.title === 'Artwork (details pending)' ? 'عمل فني (التفاصيل قريبًا)' : art.title);
                 },
                 groupLabel(idx) {
-                    const art = this.galleryArtworks[idx], prev = this.galleryArtworks[idx - 1];
+                    const art = this.visibleArtworks[idx], prev = this.visibleArtworks[idx - 1];
                     if (!art || !art.type || art.type === 'gallery' || (prev && prev.type === art.type)) return '';
                     const labels = { more: ['More works', 'أعمال أخرى'], drawing: ['Drawings', 'رسومات'], wall: ['Wall work', 'أعمال جدارية'], ceramics: ['Ceramics', 'خزف'] };
                     const l = labels[art.type]; return l ? l[this.lang === 'ar' ? 1 : 0] : '';
@@ -105,7 +110,8 @@
                             description: get(result, 'description'),
                             status: get(result, 'status').toLowerCase().trim(),
                             type: get(result, 'type').toLowerCase().trim(),
-                            title_ar: get(result, 'title_ar')
+                            title_ar: get(result, 'title_ar'),
+                            featured: ['true','1','yes'].includes(get(result,'featured').toLowerCase().trim())
                         };
                         if (art.image === LOGO_URL) return null;
                         return art;
@@ -113,7 +119,7 @@
                 },
                 closeArt() { this.showModal = false; this.zoom = false; if (location.hash.startsWith('#work-')) try { history.replaceState(null, '', location.pathname); } catch (e) {} },
                 step(d) { const l = this.galleryArtworks; if (!l.length) return; const i = l.indexOf(this.selectedArt); this.selectedArt = l[(i + d + l.length) % l.length]; this.visitorMessage = ''; try { history.replaceState(null, '', '#work-' + this.selectedArt.id); } catch (e) {} },
-                openArt(art) { this.selectedArt = art; try { history.replaceState(null, '', '#work-' + art.id); } catch (e) {} this.visitorMessage = ''; this.showModal = true;  },
+                openArt(art) { this.selectedArt = art; try { history.replaceState(null, '', '#work-' + art.id); } catch (e) {} this.visitorMessage = ''; this.showModal = true; this.$nextTick(() => document.querySelector('[aria-label="Close"]')?.focus()); },
                 sendArtInquiry() {
                     const lines = [`مرحباً عثمان، أنا مهتم بعملك الفني: ${this.selectedArt.title}`];
                     if (this.selectedArt.dimensions) lines.push(`الأبعاد: ${this.selectedArt.dimensions}`);
@@ -123,7 +129,7 @@
                     window.open(`https://wa.me/201026933840?text=${encodeURIComponent(text)}`, '_blank');
                 },
                 sendCommission() {
-                    window.location.href = `mailto:osmanrafaat05@gmail.com?subject=${encodeURIComponent(this.commForm.subject)}&body=${encodeURIComponent(`الاسم: ${this.commForm.name}\n${this.commForm.vision}`)}`;
+                    window.location.href = `mailto:osmanrafaat05@gmail.com?subject=${encodeURIComponent(this.commForm.subject)}&body=${encodeURIComponent(`الاسم: ${this.commForm.name}\nالبريد: ${this.commForm.email}\n${this.commForm.vision}`)}`;
                     this.commForm = { name: '', email: '', subject: '', vision: '' };
                 }
             }
