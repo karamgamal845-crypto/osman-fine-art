@@ -12,13 +12,24 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 IMG = os.path.join(ROOT, "img"); ORIG = os.path.join(ROOT, "originals"); WORK = os.path.join(ROOT, "work")
 for d in (IMG, ORIG, WORK): os.makedirs(d, exist_ok=True)
 
+MAX_BYTES = 40 * 1024 * 1024
+Image.MAX_IMAGE_PIXELS = 120_000_000
+ALLOWED_HOSTS = ("lh3.googleusercontent.com", "drive.google.com", "docs.google.com", "osmanrafaat.github.io")
+
 def get(url):
+    from urllib.parse import urlparse
+    u = urlparse(url)
+    if u.scheme != "https" or u.hostname not in ALLOWED_HOSTS:
+        raise ValueError("host not allowed: " + str(u.hostname))
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    return urllib.request.urlopen(req, timeout=60).read()
+    data = urllib.request.urlopen(req, timeout=60).read(MAX_BYTES + 1)
+    if len(data) > MAX_BYTES: raise ValueError("file too large")
+    return data
 
 def slug(s, i):
-    t = re.sub(r"[^a-z0-9]+", "-", (s or "").lower()).strip("-")
-    return f"{i}-{t}" if t else str(i)
+    t = re.sub(r"[^a-z0-9]+", "-", (s or "").lower()).strip("-")[:60]
+    i = re.sub(r"[^0-9]", "", i) or "x"
+    return f"{i}-{t}" if t else i
 
 def drive_id(u):
     m = re.search(r"googleusercontent\.com/d/([\w-]+)", u or "") or re.search(r"[?&]id=([\w-]+)", u or "")
@@ -30,7 +41,7 @@ def svg_to_png(path, i):
     txt = open(path, encoding="utf-8", errors="ignore").read()
     m = re.search(r'href="data:image/(?:png|jpe?g);base64,([^"]+)"', txt)
     if not m: return None
-    out = os.path.join(ORIG, f"{i}.png")
+    out = os.path.join(ORIG, f"derived-from-svg-{i}.png")
     if not os.path.exists(out): open(out, "wb").write(base64.b64decode(m.group(1)))
     return out
 
@@ -40,9 +51,10 @@ def source_image(row):
     if not u: return None
     if u.startswith(SITE + "/"): u = u[len(SITE) + 1:]
     if not u.startswith("http"):
+        if ".." in u or u.startswith("/"): return None
         p = os.path.join(ROOT, u)
         return svg_to_png(p, row["id"]) if p.endswith(".svg") and os.path.exists(p) else (p if os.path.exists(p) else None)
-    p = os.path.join(ORIG, f"{row['id']}.jpg")
+    p = os.path.join(ORIG, f"drive-{re.sub(r'[^0-9]', '', row['id'])}.jpg")  # raw downloaded bytes
     if os.path.exists(p) and os.path.getsize(p) > 1000: return p
     did = drive_id(u)
     url = f"https://lh3.googleusercontent.com/d/{did}=s0" if did else u
