@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="assets/portfolio.css">
     <script src="assets/catalog.js" defer></script>
     <script src="assets/portfolio.js" defer></script>
-    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://unpkg.com/alpinejs@3.17.5/dist/cdn.min.js" defer></script>
     
 
     <!-- Fonts -->
@@ -122,6 +122,7 @@
             </div>
         </section>
 
+        <section x-show="featuredWorks.length" class="py-14 px-6" aria-label="Featured works"><h2 class="text-3xl text-center" x-text="lang==='ar'?'أعمال مختارة':'Featured works'"></h2><div class="portfolio-featured"><template x-for="a in featuredWorks" :key="a.id"><a :href="pageUrl(a) || '#gallery'"><img :src="thumb(a)" :alt="displayTitle(a)" loading="lazy" :width="imageSize(a).w" :height="imageSize(a).h"></a></template></div></section>
         <!-- GALLERY SECTION -->
         <section id="gallery" class="py-16 md:py-32 px-6 md:px-16 lg:px-32">
             <div class="max-w-7xl mx-auto">
@@ -136,8 +137,11 @@
                 <div x-show="loading" class="text-center py-24 opacity-30 italic serif-italic text-xl" x-text="t('loading')"></div>
                 <div x-show="!loading && galleryArtworks.length === 0" class="text-center py-24 opacity-30 italic serif-italic text-xl" x-text="t('coming-soon')"></div>
 
+                <div class="portfolio-filters" role="group" :aria-label="lang === 'ar' ? 'تصفية الأعمال' : 'Filter works'">
+                    <template x-for="k in ['all', ...categories]" :key="k"><button type="button" @click="filterType=k" :aria-pressed="filterType===k" x-text="categoryName(k)"></button></template>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-14 md:gap-y-32" x-show="!loading">
-                    <template x-for="(art, idx) in galleryArtworks" :key="idx">
+                    <template x-for="(art, idx) in visibleArtworks" :key="idx">
                         <div class="contents">
                         <h3 x-show="groupLabel(idx)" x-text="groupLabel(idx)" class="col-span-full text-3xl md:text-5xl serif-italic pt-6 md:pt-8 border-t border-art-ink/10 mt-4 md:mt-0"></h3>
 <div @click="openArt(art)" class="group cursor-pointer fade-in" :style="`animation-delay: ${Math.min(idx, 4) * 80}ms`">
