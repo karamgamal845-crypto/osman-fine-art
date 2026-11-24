@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://osmanrafaat.github.io/osman-fine-art/sitemap.xml

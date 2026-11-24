@@ -1,0 +1,226 @@
+[
+ {
+  "id": "1",
+  "slug": "1-another-world",
+  "thumb": "img/1-600.webp",
+  "full": "img/1-1600.webp",
+  "w": 447,
+  "h": 738
+ },
+ {
+  "id": "3",
+  "slug": "3-birds-symphony",
+  "thumb": "img/3-600.webp",
+  "full": "img/3-1600.webp",
+  "w": 615,
+  "h": 703
+ },
+ {
+  "id": "4",
+  "slug": "4-the-peacock",
+  "thumb": "img/4-600.webp",
+  "full": "img/4-1600.webp",
+  "w": 850,
+  "h": 857
+ },
+ {
+  "id": "5",
+  "slug": "5-el-falooka",
+  "thumb": "img/5-600.webp",
+  "full": "img/5-1600.webp",
+  "w": 1920,
+  "h": 1920
+ },
+ {
+  "id": "6",
+  "slug": "6-leonardo-da-vinci",
+  "thumb": "img/6-600.webp",
+  "full": "img/6-1600.webp",
+  "w": 1321,
+  "h": 1600
+ },
+ {
+  "id": "7",
+  "slug": "7-gustave-courbet-ii",
+  "thumb": "img/7-600.webp",
+  "full": "img/7-1600.webp",
+  "w": 1321,
+  "h": 1600
+ },
+ {
+  "id": "8",
+  "slug": "8-henri-matisse",
+  "thumb": "img/8-600.webp",
+  "full": "img/8-1600.webp",
+  "w": 1321,
+  "h": 1600
+ },
+ {
+  "id": "9",
+  "slug": "9-claude-monet",
+  "thumb": "img/9-600.webp",
+  "full": "img/9-1600.webp",
+  "w": 1321,
+  "h": 1600
+ },
+ {
+  "id": "10",
+  "slug": "10-gustave-courbet-i",
+  "thumb": "img/10-600.webp",
+  "full": "img/10-1600.webp",
+  "w": 1321,
+  "h": 1600
+ },
+ {
+  "id": "12",
+  "slug": "12-man-with-a-crow",
+  "thumb": "img/12-600.webp",
+  "full": "img/12-1600.webp",
+  "w": 1321,
+  "h": 1600
+ },
+ {
+  "id": "13",
+  "slug": "13-artwork-details-pending",
+  "thumb": "img/13-600.webp",
+  "full": "img/13-1600.webp",
+  "w": 1321,
+  "h": 1600
+ },
+ {
+  "id": "14",
+  "slug": "14-artwork-details-pending",
+  "thumb": "img/14-600.webp",
+  "full": "img/14-1600.webp",
+  "w": 1200,
+  "h": 1599
+ },
+ {
+  "id": "15",
+  "slug": "15-sunflowers-in-a-blue-vase",
+  "thumb": "img/15-600.webp",
+  "full": "img/15-1600.webp",
+  "w": 1200,
+  "h": 1599
+ },
+ {
+  "id": "16",
+  "slug": "16-blue-leaf-prints",
+  "thumb": "img/16-600.webp",
+  "full": "img/16-1600.webp",
+  "w": 1200,
+  "h": 1599
+ },
+ {
+  "id": "17",
+  "slug": "17-tree-painting",
+  "thumb": "img/17-600.webp",
+  "full": "img/17-1600.webp",
+  "w": 1200,
+  "h": 1600
+ },
+ {
+  "id": "18",
+  "slug": "18-woman-with-a-jar-held-by-the-artist",
+  "thumb": "img/18-600.webp",
+  "full": "img/18-1600.webp",
+  "w": 960,
+  "h": 1280
+ },
+ {
+  "id": "19",
+  "slug": "19-man-with-a-crow-charcoal",
+  "thumb": "img/19-600.webp",
+  "full": "img/19-1600.webp",
+  "w": 1080,
+  "h": 1516
+ },
+ {
+  "id": "20",
+  "slug": "20-veiled-woman-charcoal",
+  "thumb": "img/20-600.webp",
+  "full": "img/20-1600.webp",
+  "w": 1080,
+  "h": 1440
+ },
+ {
+  "id": "21",
+  "slug": "21-pencil-portrait",
+  "thumb": "img/21-600.webp",
+  "full": "img/21-1600.webp",
+  "w": 1080,
+  "h": 1440
+ },
+ {
+  "id": "22",
+  "slug": "22-fish-study-pencil",
+  "thumb": "img/22-600.webp",
+  "full": "img/22-1600.webp",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "id": "23",
+  "slug": "23-fish-drawing-pencil",
+  "thumb": "img/23-600.webp",
+  "full": "img/23-1600.webp",
+  "w": 1600,
+  "h": 1131
+ },
+ {
+  "id": "24",
+  "slug": "24-wall-painting",
+  "thumb": "img/24-600.webp",
+  "full": "img/24-1600.webp",
+  "w": 1200,
+  "h": 1599
+ },
+ {
+  "id": "25",
+  "slug": "25-wall-painting-side-view",
+  "thumb": "img/25-600.webp",
+  "full": "img/25-1600.webp",
+  "w": 1200,
+  "h": 1599
+ },
+ {
+  "id": "26",
+  "slug": "26-painting-the-wall",
+  "thumb": "img/26-600.webp",
+  "full": "img/26-1600.webp",
+  "w": 1200,
+  "h": 1599
+ },
+ {
+  "id": "27",
+  "slug": "27-clay-snake-sculpture",
+  "thumb": "img/27-600.webp",
+  "full": "img/27-1600.webp",
+  "w": 1080,
+  "h": 1440
+ },
+ {
+  "id": "28",
+  "slug": "28-clay-face-vase-side",
+  "thumb": "img/28-600.webp",
+  "full": "img/28-1600.webp",
+  "w": 1200,
+  "h": 1599
+ },
+ {
+  "id": "29",
+  "slug": "29-clay-face-vase-front",
+  "thumb": "img/29-600.webp",
+  "full": "img/29-1600.webp",
+  "w": 1200,
+  "h": 1599
+ },
+ {
+  "id": "30",
+  "slug": "30-with-the-finished-clay-piece",
+  "thumb": "img/30-600.webp",
+  "full": "img/30-1600.webp",
+  "w": 1200,
+  "h": 1599
+ }
+]
