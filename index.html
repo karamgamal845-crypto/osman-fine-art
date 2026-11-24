@@ -169,9 +169,9 @@
         </section>
 
         <!-- GALLERY SECTION -->
-        <section id="gallery" class="py-32 px-6 md:px-16 lg:px-32">
+        <section id="gallery" class="py-16 md:py-32 px-6 md:px-16 lg:px-32">
             <div class="max-w-7xl mx-auto">
-                <div class="flex flex-col md:flex-row justify-between items-baseline mb-24">
+                <div class="flex flex-col md:flex-row justify-between items-baseline mb-10 md:mb-24">
                     <div class="fade-in">
                         <span class="text-[10px] uppercase font-black tracking-[0.4em] text-art-ink/40 block mb-6" x-text="t('gallery-eyebrow')"></span>
                         <h2 class="text-5xl md:text-8xl serif-italic mb-6" x-text="t('section-gallery')"></h2>
@@ -182,11 +182,11 @@
                 <div x-show="loading" class="text-center py-24 opacity-30 italic serif-italic text-xl" x-text="t('loading')"></div>
                 <div x-show="!loading && galleryArtworks.length === 0" class="text-center py-24 opacity-30 italic serif-italic text-xl" x-text="t('coming-soon')"></div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-32" x-show="!loading">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-14 md:gap-y-32" x-show="!loading">
                     <template x-for="(art, idx) in galleryArtworks" :key="idx">
                         <div class="contents">
-                        <h3 x-show="groupLabel(idx)" x-text="groupLabel(idx)" class="col-span-full text-3xl md:text-5xl serif-italic pt-8 border-t border-art-ink/10"></h3>
-<div @click="openArt(art)" class="group cursor-pointer fade-in" :style="`animation-delay: ${idx * 100}ms`">
+                        <h3 x-show="groupLabel(idx)" x-text="groupLabel(idx)" class="col-span-full text-3xl md:text-5xl serif-italic pt-6 md:pt-8 border-t border-art-ink/10 mt-4 md:mt-0"></h3>
+<div @click="openArt(art)" class="group cursor-pointer fade-in" :style="`animation-delay: ${Math.min(idx, 4) * 80}ms`">
                             <div class="aspect-[4/5] bg-neutral-200 overflow-hidden relative shadow-2xl artwork-image-container">
                                 <img :src="art.image" :alt="art.title" class="w-full h-full object-contain p-3">
                                 <div class="absolute inset-0 bg-art-ink/10 opacity-0 group-hover:opacity-100 transition-all duration-700 flex items-center justify-center">
@@ -213,7 +213,7 @@
         </section>
 
         <!-- HOW TO COLLECT -->
-        <section id="collect" class="py-24 px-6 md:px-16 lg:px-32 bg-white border-y border-art-ink/5">
+        <section id="collect" class="py-14 md:py-24 px-6 md:px-16 lg:px-32 bg-white border-y border-art-ink/5">
             <div class="max-w-6xl mx-auto">
                 <div class="text-center mb-16">
                     <span class="text-[10px] uppercase font-black tracking-[0.4em] text-art-ink/40 block mb-6" x-text="t('collect-eyebrow')"></span>
@@ -240,7 +240,7 @@
         </section>
 
         <!-- ABOUT SECTION -->
-        <section id="about" class="bg-art-ink text-[#f5f2eb] py-40 px-6 md:px-16 lg:px-32">
+        <section id="about" class="bg-art-ink text-[#f5f2eb] py-20 md:py-40 px-6 md:px-16 lg:px-32">
             <div class="max-w-4xl mx-auto text-center">
                 <div class="flex flex-col justify-center">
                     <span class="text-art-accent text-[10px] uppercase font-black tracking-[0.4em] mb-12 block" x-text="t('artist-statement')"></span>
@@ -273,7 +273,7 @@
         </section>
 
         <!-- COMMISSION SECTION -->
-        <section id="commission" class="py-32 px-6 md:px-16 lg:px-32 border-t border-art-ink/5">
+        <section id="commission" class="py-16 md:py-32 px-6 md:px-16 lg:px-32 border-t border-art-ink/5">
             <div class="max-w-4xl mx-auto">
                 <div class="text-center mb-16">
                     <span class="text-[10px] uppercase font-black tracking-[0.4em] text-art-ink/40 block mb-6" x-text="t('commission-eyebrow')"></span>
@@ -308,7 +308,7 @@
         </section>
 
         <!-- FOOTER -->
-        <footer id="contact" class="py-32 px-6 border-t border-art-ink/5 text-center">
+        <footer id="contact" class="py-16 md:py-32 px-6 border-t border-art-ink/5 text-center">
             <div class="max-w-2xl mx-auto flex flex-col items-center">
                 <img src="art/21-logo.jpg" alt="Logo" class="h-24 w-24 rounded-full mb-12 site-logo">
                 <p class="text-[10px] uppercase font-black tracking-[0.4em] mb-12 opacity-30 italic" x-text="t('footer-copy')"></p>
@@ -577,4 +577,3 @@
     </script>
 </body>
 </html>
-
