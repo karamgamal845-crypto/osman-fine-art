@@ -172,7 +172,7 @@ def main():
     # catalogue for the gallery (thumbnails + page links); index.html may use it later
     cat = [{"id": r["id"], "slug": r["_slug"], "thumb": r["_img"]["600"], "full": r["_img"]["1600"], "w": r["_img"]["w"], "h": r["_img"]["h"]} for r in seen]
     json.dump(cat, open(os.path.join(ROOT, "works.json"), "w"), indent=1)
-    urls = [SITE + "/"] + [f"{SITE}/work/{r['_slug']}/" for r in seen]
+    urls = [SITE + "/", SITE + "/about/"] + [f"{SITE}/work/{r['_slug']}/" for r in seen]
     open(os.path.join(ROOT, "sitemap.xml"), "w").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f"<url><loc>{u}</loc></url>\n" for u in urls) + "</urlset>\n")
     open(os.path.join(ROOT, "robots.txt"), "w").write(f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n")
     print("built", n, "pages")
