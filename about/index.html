@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html :lang="lang" :dir="lang === 'ar' ? 'rtl' : 'ltr'" x-data="osmanArt()">
+<head>
+<base href="../">
+<link rel="canonical" href="https://osmanrafaat.github.io/osman-fine-art/about/">
+    <meta charset="UTF-8">
+<link rel="icon" href="art/21-logo.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Osman Rafaat | Visual Artist</title>
+    <meta name="description" content="Paintings and drawings by Osman Rafaat, a visual artist from Minya, Egypt. Browse the works and ask about availability.">
+    <meta property="og:title" content="About Osman Rafaat | Visual Artist">
+    <meta property="og:description" content="Paintings and drawings by Osman Rafaat. Browse the works and contact the artist.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://osmanrafaat.github.io/osman-fine-art/about/">
+    <meta property="og:image" content="https://osmanrafaat.github.io/osman-fine-art/art/24-another-world.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-57P5FH8434"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-57P5FH8434');
+</script>
+    
+    <!-- Scripts -->
+    
+    
+    <link rel="stylesheet" href="assets/portfolio.css">
+    <script src="assets/catalog.js" defer></script>
+    <script src="assets/portfolio.js" defer></script>
+    <script src="https://unpkg.com/alpinejs@3.17.5/dist/cdn.min.js" defer></script>
+    
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Inter:wght@200;300;400;500;600&family=Noto+Sans+Arabic:wght@300;400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Inter:wght@200;300;400;500;600&family=Noto+Sans+Arabic:wght@300;400;500;600&display=swap" rel="stylesheet"></noscript>
+
+    
+</head>
+<body class="antialiased"><nav class="portfolio-filters" aria-label="Main"><a href="./">Osman Rafaat · Gallery</a><button type="button" @click="toggleLang()" x-text="lang === 'en' ? 'العربية' : 'English'"></button></nav><main><section id="about" class="bg-art-ink text-[#f5f2eb] py-20 md:py-40 px-6 md:px-16 lg:px-32">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="flex flex-col justify-center">
+                    <span class="text-art-accent text-[10px] uppercase font-black tracking-[0.4em] mb-12 block" x-text="t('artist-statement')"></span>
+                    <img width="100" height="100" src="art/21-logo.jpg" alt="Osman Rafaat" class="w-28 h-28 rounded-full mx-auto mb-10 object-cover border border-white/20">
+                    <h1 class="text-5xl md:text-8xl serif-italic mb-12 leading-tight" x-text="t('about-title')"></h1>
+                    
+                    <div class="space-y-8 font-light text-lg md:text-xl leading-relaxed text-white/70">
+                        <p x-text="t('about-p1')"></p>
+                        <p x-text="t('about-p2')"></p>
+                        <p x-text="t('about-p3')"></p>
+                        <p x-text="t('about-p4')"></p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-16 text-center">
+                            <figure>
+                                <img width="750" height="1000" loading="lazy" src="art/about-process.svg" alt="Osman Rafaat drawing in his studio" class="w-full h-auto shadow-2xl">
+                                <figcaption class="text-[10px] uppercase font-bold tracking-[0.25em] text-white/75 mt-4" x-text="t('about-photo-process')"></figcaption>
+                            </figure>
+                            <figure>
+                                <img width="960" height="720" loading="lazy" src="art/23-about-exhibition.jpg" alt="Osman Rafaat at an exhibition opening" class="w-full h-auto shadow-2xl">
+                                <figcaption class="text-[10px] uppercase font-bold tracking-[0.25em] text-white/75 mt-4" x-text="t('about-photo-exhibition')"></figcaption>
+                            </figure>
+                            <template x-for="(a, i) in aboutArtworks" :key="'ab'+i">
+                                <figure class="md:col-span-2">
+                                    <img :width="imageSize(a).w" :height="imageSize(a).h" :src="a.image" :alt="displayTitle(a)" loading="lazy" class="w-full h-auto shadow-2xl">
+                                    <figcaption class="text-[10px] uppercase font-bold tracking-[0.25em] text-white/75 mt-4" x-text="displayTitle(a)"></figcaption>
+                                </figure>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section></main><footer><a href="./#contact">Contact</a></footer></body></html>
