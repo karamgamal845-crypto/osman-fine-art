@@ -184,8 +184,6 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-32" x-show="!loading">
                     <template x-for="(art, idx) in galleryArtworks" :key="idx">
-                      <div class="contents">
-                        <h3 x-show="groupLabel(idx)" x-text="groupLabel(idx)" class="col-span-full text-3xl md:text-5xl serif-italic pt-8 border-t border-art-ink/10"></h3>
                         <div @click="openArt(art)" class="group cursor-pointer fade-in" :style="`animation-delay: ${idx * 100}ms`">
                             <div class="aspect-[4/5] bg-neutral-200 overflow-hidden relative shadow-2xl artwork-image-container">
                                 <img :src="art.image" :alt="art.title" class="w-full h-full object-contain p-3">
@@ -206,7 +204,6 @@
                                 </div>
                             </div>
                         </div>
-                      </div>
                     </template>
                 </div>
             </div>
@@ -260,12 +257,6 @@
                                 <img src="art/23-about-exhibition.jpg" alt="Osman Rafaat at an exhibition opening" class="w-full h-auto shadow-2xl">
                                 <figcaption class="text-[10px] uppercase font-bold tracking-[0.25em] text-white/40 mt-4" x-text="t('about-photo-exhibition')"></figcaption>
                             </figure>
-                            <template x-for="(a, i) in aboutArtworks" :key="'ab'+i">
-                                <figure class="md:col-span-2">
-                                    <img :src="a.image" :alt="a.title" class="w-full h-auto shadow-2xl">
-                                    <figcaption class="text-[10px] uppercase font-bold tracking-[0.25em] text-white/40 mt-4" x-text="displayTitle(a)"></figcaption>
-                                </figure>
-                            </template>
                         </div>
                     </div>
                 </div>
@@ -314,8 +305,8 @@
                 <p class="text-[10px] uppercase font-black tracking-[0.4em] mb-12 opacity-30 italic" x-text="t('footer-copy')"></p>
                 
                 <div class="flex flex-col md:flex-row gap-6 w-full">
-                    <a href="tel:01122633026" class="flex-1 px-8 py-5 border border-art-ink/10 text-[10px] uppercase font-bold tracking-widest hover:bg-art-ink hover:text-white transition-all flex items-center justify-center gap-2">
-                        01122633026
+                    <a href="tel:01026933840" class="flex-1 px-8 py-5 border border-art-ink/10 text-[10px] uppercase font-bold tracking-widest hover:bg-art-ink hover:text-white transition-all flex items-center justify-center gap-2">
+                        01026933840
                     </a>
                     <a href="https://wa.me/201026933840" target="_blank" class="flex-1 px-8 py-5 bg-art-ink text-white text-[10px] uppercase font-bold tracking-widest hover:bg-art-accent transition-all flex items-center justify-center gap-2">
                         WhatsApp
@@ -330,15 +321,26 @@
         </footer>
     </div>
 
+    <!-- ZOOM -->
+    <div x-show="zoom" x-cloak class="fixed inset-0 z-[200] bg-black/95 flex items-center justify-center p-2" @click="zoom = false" style="cursor:zoom-out">
+        <img :src="selectedArt?.image" :alt="displayTitle(selectedArt)" class="max-w-full max-h-full object-contain">
+        <button class="absolute top-4 right-4 text-white text-3xl px-4" aria-label="Close zoom">&times;</button>
+    </div>
+
     <!-- ARTWORK MODAL -->
     <div x-show="showModal" x-cloak class="fixed inset-0 z-[100] flex items-center justify-center p-4">
-        <div class="absolute inset-0 modal-backdrop" @click="showModal = false"></div>
+        <div class="absolute inset-0 modal-backdrop" @click="closeArt()" @keydown.window.escape="zoom ? zoom = false : closeArt()" @keydown.window.arrow-right="showModal && !zoom && step(lang === 'ar' ? -1 : 1)" @keydown.window.arrow-left="showModal && !zoom && step(lang === 'ar' ? 1 : -1)"></div>
         <div class="bg-art-bg w-full max-w-6xl max-h-[90vh] overflow-y-auto relative shadow-2xl flex flex-col lg:flex-row fade-in">
-            <button @click="showModal = false" class="absolute top-8 left-8 z-20 p-3 hover:bg-art-ink/5 rounded-full transition-all">
+            <button @click="closeArt()" aria-label="Close" class="absolute top-8 left-8 z-20 p-3 hover:bg-art-ink/5 rounded-full transition-all">
                 <i data-lucide="x"></i>
             </button>
-            <div class="lg:w-3/5 bg-neutral-200 flex items-center justify-center p-8 md:p-12 lg:p-24">
-                <img :src="selectedArt?.image" :alt="selectedArt?.title" class="max-w-full max-h-[70vh] shadow-2xl">
+            <div class="relative lg:w-3/5 bg-neutral-200 flex items-center justify-center p-8 pb-24 md:p-12 md:pb-24 lg:p-24 lg:pb-28">
+                <img :src="selectedArt?.image" :alt="displayTitle(selectedArt)" @click="zoom = true" style="cursor:zoom-in" class="max-w-full max-h-[70vh] shadow-2xl">
+                <div class="absolute bottom-4 inset-x-0 flex justify-center gap-3">
+                    <button @click="step(-1)" aria-label="Previous work" class="px-5 py-3 bg-white/80 hover:bg-white text-[10px] uppercase font-bold tracking-[0.2em]" x-text="lang === 'ar' ? 'السابق' : 'Prev'"></button>
+                    <button @click="zoom = true" aria-label="Zoom" class="px-5 py-3 bg-white/80 hover:bg-white text-[10px] uppercase font-bold tracking-[0.2em]" x-text="lang === 'ar' ? 'تكبير' : 'Zoom'"></button>
+                    <button @click="step(1)" aria-label="Next work" class="px-5 py-3 bg-white/80 hover:bg-white text-[10px] uppercase font-bold tracking-[0.2em]" x-text="lang === 'ar' ? 'التالي' : 'Next'"></button>
+                </div>
             </div>
             <div class="lg:w-2/5 p-12 md:p-20 flex flex-col" :class="lang === 'ar' ? 'text-right' : ''">
                 <div class="flex-1">
@@ -445,8 +447,8 @@
 
         function osmanArt() {
             return {
-                lang: localStorage.getItem('osman_lang') || 'en', view: 'site', loading: true, mobileMenu: false, showModal: false, selectedArt: null, visitorMessage: '', artworks: [],
-                get galleryArtworks() { return this.artworks.filter(art => art.type !== 'about'); },
+                lang: localStorage.getItem('osman_lang') || 'en', view: 'site', loading: true, mobileMenu: false, showModal: false, zoom: false, selectedArt: null, visitorMessage: '', artworks: [],
+                get galleryArtworks() { return this.artworks.filter(art => !art.type || art.type === 'gallery'); },
                 get aboutArtworks() { return this.artworks.filter(art => art.type === 'about'); },
                 commForm: { name: '', email: '', subject: '', vision: '' },
                 init() { this.loadArtworks(); setTimeout(() => lucide.createIcons(), 500); },
@@ -455,13 +457,7 @@
                     if (!art) return '';
                     if (this.lang !== 'ar') return art.title;
                     const names = { '1': 'عالم آخر', '3': 'سيمفونية الطيور', '4': 'الطاووس', '5': 'الفلوكة', '6': 'ليوناردو دافنشي', '7': 'جوستاف كوربيه II', '8': 'هنري ماتيس', '9': 'كلود مونيه', '10': 'جوستاف كوربيه I', '12': 'رجل مع غراب' };
-                    return names[art.id] || art.title_ar || (art.title === 'Artwork (details pending)' ? 'عمل فني (التفاصيل قريبًا)' : art.title);
-                },
-                groupLabel(idx) {
-                    const art = this.galleryArtworks[idx], prev = this.galleryArtworks[idx - 1];
-                    if (!art || !art.type || art.type === 'gallery' || (prev && prev.type === art.type)) return '';
-                    const labels = { more: ['More works', 'أعمال أخرى'], drawing: ['Drawings', 'رسومات'], wall: ['Wall work', 'أعمال جدارية'], ceramics: ['Ceramics', 'خزف'] };
-                    const l = labels[art.type]; return l ? l[this.lang === 'ar' ? 1 : 0] : '';
+                    return names[art.id] || (art.title === 'Artwork (details pending)' ? 'عمل فني (التفاصيل قريبًا)' : art.title);
                 },
                 displayMedium(art) {
                     if (!art?.medium) return '';
@@ -484,7 +480,7 @@
                         const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSiChHx_Y9xUhLWb42AXOVrqUMVSUa-G01laFnTo3IZgE2HLPnUSmpHiZhBy79rluBUyYvshSuCDreI/pub?output=csv';
                         const response = await fetch(SHEET_URL);
                         const text = await response.text();
-                        this.artworks = this.parseCSV(text);
+                        this.artworks = this.parseCSV(text); const m = location.hash.match(/^#work-(\d+)$/); if (m) { const a = this.artworks.find(x => x.id === m[1]); if (a) setTimeout(() => this.openArt(a), 0); }
                     } catch (e) { console.error('Load artworks failed', e); this.artworks = FALLBACK_ARTWORKS; }
                     this.loading = false;
                 },
@@ -539,14 +535,15 @@
                             image: get(result, 'image'),
                             description: get(result, 'description'),
                             status: get(result, 'status').toLowerCase().trim(),
-                            type: get(result, 'type').toLowerCase().trim(),
-                            title_ar: get(result, 'title_ar')
+                            type: get(result, 'type').toLowerCase().trim()
                         };
                         if (art.image === LOGO_URL) return null;
                         return art;
                     }).filter(Boolean);
                 },
-                openArt(art) { this.selectedArt = art; this.visitorMessage = ''; this.showModal = true; setTimeout(() => lucide.createIcons(), 50); },
+                closeArt() { this.showModal = false; this.zoom = false; if (location.hash.startsWith('#work-')) try { history.replaceState(null, '', location.pathname); } catch (e) {} },
+                step(d) { const l = this.galleryArtworks; if (!l.length) return; const i = l.indexOf(this.selectedArt); this.selectedArt = l[(i + d + l.length) % l.length]; this.visitorMessage = ''; try { history.replaceState(null, '', '#work-' + this.selectedArt.id); } catch (e) {} },
+                openArt(art) { this.selectedArt = art; try { history.replaceState(null, '', '#work-' + art.id); } catch (e) {} this.visitorMessage = ''; this.showModal = true; setTimeout(() => lucide.createIcons(), 50); },
                 sendArtInquiry() {
                     const lines = [`مرحباً عثمان، أنا مهتم بعملك الفني: ${this.selectedArt.title}`];
                     if (this.selectedArt.dimensions) lines.push(`الأبعاد: ${this.selectedArt.dimensions}`);
