@@ -162,7 +162,7 @@
                 <!-- Featured artwork side -->
                 <div class="order-1 lg:order-2 fade-in" style="animation-delay: 150ms">
                     <div class="hero-frame p-3 md:p-5 max-w-md mx-auto lg:max-w-none">
-                        <picture><source srcset="img/cover.webp" type="image/webp"><img src="img/cover.jpg" width="960" height="1280" alt="Osman Rafaat standing with his painting of a veiled woman holding a jar" class="w-full h-auto shadow-sm"></picture>
+                        <picture><img src="originals/cover-original.jpg" width="960" height="1280" alt="Osman Rafaat standing with his painting of a veiled woman holding a jar" class="w-full h-auto shadow-sm"></picture>
                     </div>
                 </div>
 
@@ -354,7 +354,7 @@
 
     <!-- ZOOM -->
     <div x-show="zoom" x-cloak class="fixed inset-0 z-[200] bg-black/95 flex items-center justify-center p-2" @click="zoom = false" style="cursor:zoom-out">
-        <img :src="selectedArt?.image" :alt="displayTitle(selectedArt)" class="max-w-full max-h-full object-contain">
+        <img :src="full(selectedArt)" @error="imgFallback($event)" :alt="displayTitle(selectedArt)" class="max-w-full max-h-full object-contain">
         <button class="absolute top-4 right-4 text-white text-3xl px-4" aria-label="Close zoom">&times;</button>
     </div>
 
@@ -366,7 +366,7 @@
                 <i data-lucide="x"></i>
             </button>
             <div class="relative lg:w-3/5 bg-neutral-200 flex items-center justify-center p-8 pb-24 md:p-12 md:pb-24 lg:p-24 lg:pb-28">
-                <img :src="selectedArt?.image" :alt="displayTitle(selectedArt)" @click="zoom = true" style="cursor:zoom-in" class="max-w-full max-h-[70vh] shadow-2xl">
+                <img :src="full(selectedArt)" @error="imgFallback($event)" :alt="displayTitle(selectedArt)" @click="zoom = true" style="cursor:zoom-in" class="max-w-full max-h-[70vh] shadow-2xl">
                 <div class="absolute bottom-4 inset-x-0 flex justify-center gap-3">
                     <button @click="step(-1)" aria-label="Previous work" class="px-5 py-3 bg-white/80 hover:bg-white text-[10px] uppercase font-bold tracking-[0.2em]" x-text="lang === 'ar' ? 'السابق' : 'Prev'"></button>
                     <button @click="zoom = true" aria-label="Zoom" class="px-5 py-3 bg-white/80 hover:bg-white text-[10px] uppercase font-bold tracking-[0.2em]" x-text="lang === 'ar' ? 'تكبير' : 'Zoom'"></button>
@@ -483,7 +483,9 @@
                 lang: localStorage.getItem('osman_lang') || 'en', view: 'site', loading: true, mobileMenu: false, showModal: false, zoom: false, selectedArt: null, visitorMessage: '', artworks: [],
                 get galleryArtworks() { return this.artworks.filter(art => art.type !== 'about' && art.type !== 'archive'); },
                 get latestWorks() { return this.galleryArtworks.filter(a => a.type && a.type !== 'gallery').slice(-4).reverse(); },
-                pages: {}, thumbs: {},
+                pages: {}, thumbs: {}, fulls: {},
+                full(a) { return (a && this.fulls[a.id]) || (a && a.image) || ''; },
+                imgFallback(e) { const a = this.selectedArt; if (a && a.image && e.target.getAttribute('src') !== a.image) e.target.src = a.image; },
                 thumb(a) { return this.thumbs[a.id] || a.image; },
                 pageUrl(a) { const p = this.pages[a.id]; return p ? p : ''; },
                 get aboutArtworks() { return this.artworks.filter(art => art.type === 'about'); },
@@ -521,7 +523,7 @@
                     this.loading = true;
                     try {
                         const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSiChHx_Y9xUhLWb42AXOVrqUMVSUa-G01laFnTo3IZgE2HLPnUSmpHiZhBy79rluBUyYvshSuCDreI/pub?output=csv';
-                        try { const pr = await fetch('works.json'); if (pr.ok) { (await pr.json()).forEach(w => { this.pages[w.id] = 'work/' + w.slug + '/'; this.thumbs[w.id] = w.thumb; }); } } catch (e) {}
+                        try { const pr = await fetch('works.json'); if (pr.ok) { (await pr.json()).forEach(w => { this.pages[w.id] = 'work/' + w.slug + '/'; this.thumbs[w.id] = w.thumb; this.fulls[w.id] = w.full; }); } } catch (e) {}
                         const response = await fetch(SHEET_URL);
                         const text = await response.text();
                         this.artworks = this.parseCSV(text); const m = location.hash.match(/^#work-(\d+)$/); if (m) { const a = this.artworks.find(x => x.id === m[1]); if (a) setTimeout(() => this.openArt(a), 0); }
